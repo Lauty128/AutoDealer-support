@@ -1,0 +1,76 @@
+:root{
+    --background-color:#e7e7e7;
+    --background-contrast-color: #9e9e9e;
+
+    --primary-color: #dcac0c;
+    --hover-color: #e4c85b ;
+}
+
+body{
+    display: flex;
+    background-color: var(--background-color);
+}
+
+body::-webkit-scrollbar {
+    width: 12px;         
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+    border-radius: 20px;       
+    border: 4px solid var(--background-color);  
+}
+
+
+.menu{
+    width: 300px;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100%;
+    background-color: #fff;
+    /* background-color: red; */
+}
+.ad{
+    /* width: 100%; */
+    height: 1200px;
+    padding: 25px;
+}
+
+.ad__title{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+.ad__title h2{
+    color: #444444;
+    margin: 0;
+    font-size: 1.2em;
+}
+.ad__title p{
+    margin: 0;
+    font-size: .8em;
+    opacity: .8;
+}
+
+
+.ad__title svg{
+    background-color: var(--primary-color);
+    width: 45px;
+    height: 45px;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.ad-table tbody td{
+    background-color: var(--background-color) !important;
+    border-color: var(--background-contrast-color);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    vertical-align: middle;
+}
