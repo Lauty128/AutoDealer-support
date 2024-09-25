@@ -3,7 +3,7 @@
     --background-contrast-color: #9e9e9e;
 
     --primary-color: #dcac0c;
-    --hover-color: #e4c85b ;
+    --hover-color: #e4c85b;
 }
 
 body{
@@ -25,6 +25,19 @@ body::-webkit-scrollbar-thumb {
     border: 4px solid var(--background-color);  
 }
 
+/* Para evitar */
+.swal2-shown {
+	padding-right: 0 !important;
+}
+
+.swal2-container::-webkit-scrollbar {
+	display: none !important;
+}
+
+button svg{
+    pointer-events: none;
+}
+
 
 .menu{
     width: 300px;
@@ -35,6 +48,15 @@ body::-webkit-scrollbar-thumb {
     background-color: #fff;
     /* background-color: red; */
 }
+.menu__links{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    margin-top: 30px;
+    padding: 0 10%;
+}
+
 .ad{
     /* width: 100%; */
     height: 1200px;
@@ -73,4 +95,63 @@ body::-webkit-scrollbar-thumb {
     padding-top: 12px;
     padding-bottom: 12px;
     vertical-align: middle;
+}
+
+.ad__filtersContainer{
+    width: 100%;
+    /* margin-bottom: 40px; */
+}
+
+.ad__filtersContainer form{
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.ad__filtersContainer form input{
+    width: 100%;
+}
+
+.ad__filtersContainer form button{
+    flex-shrink: 0;
+    border: 1px solid var(--primary-color);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 15px;
+}
+.ad__filtersContainer form button:hover{
+    background-color: var(--primary-color);
+}
+.ad__filtersContainer form button:hover svg{
+    color: #fff !important;
+}
+
+
+/*---------------------- MODALS ----------------------*/
+.viewModal-body span{
+    font-size: .7em;
+    font-weight: bold;
+}
+.viewModal-body p{
+    margin-top: 0;
+    font-size: 1.1em;
+}
+
+.modalLoader{
+    display: none; /*Deshabilitado desde un inicio*/
+    position: absolute;
+    border-radius: var(--bs-modal-border-radius);
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalLoader--active{
+    display: flex;
 }
