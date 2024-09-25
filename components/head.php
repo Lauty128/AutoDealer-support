@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ICON -->
-<link rel="shortcut icon" href="public/assets/logoMonza-min.jpg" type="image/jpg">
+<link rel="shortcut icon" href="assets/images/logo.png" type="image/png">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,8 +13,11 @@
     rel="stylesheet" />
 
 <!-- BOOTSTRAP FILES -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
+<script src="assets/js/bootstrap/bootstrap.js"> </script>
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- LOCAL FILES -->
 <link rel="stylesheet" href="assets/css/index.css">
