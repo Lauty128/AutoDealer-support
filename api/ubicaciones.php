@@ -15,7 +15,7 @@ $request = file_get_contents('php://input');
 # Endpoints
 if($endpoint == 'get'){
     $data = json_decode($request, true);
-    $response = ClientesModel::getAll($data ?? []);
+    $response = UbicacionesModel::getAll($data ?? []);
 
     echo json_encode($response);
     exit();
@@ -27,9 +27,9 @@ else if($endpoint == 'get-one'){
 
     # Obtener usuario por id
     $id = $_GET['id'];
-    $response = ClientesModel::getById($id);
+    $response = UbicacionesModel::getById($id);
     
-    # Si $response es null se ejecuta un mensaje de error y se corta el codigo
+    # Si $categorias es null se ejecuta un mensaje de error y se corta el codigo
     utilBadConnectionMessage($response);
 
     echo json_encode($response);
@@ -39,36 +39,11 @@ else if($endpoint == 'get-one'){
 else if($endpoint == 'create' && $_SERVER["REQUEST_METHOD"] == "POST"){
     $data = json_decode($request, true);
 
-    $response = ClientesModel::create($data);
+    $response = UbicacionesModel::create($data);
 
     echo json_encode($response);
     exit();
 }
-
-else if($endpoint == 'update' && $_SERVER["REQUEST_METHOD"] == "POST"){
-    $data = json_decode($request, true);
-
-    $response = ClientesModel::update($data);
-
-    echo json_encode($response);
-    exit();
-}
-
-else if($endpoint == 'delete' && $_SERVER["REQUEST_METHOD"] == "POST"){
-    $data = json_decode($request, true);
-
-    if(!isset($data['id']))
-        return json_encode([
-            'message' => 'No se envio ningun id para eliminar',
-            'status' => 500    
-        ]);
-
-    $response = ClientesModel::delete($data['id']);
-
-    echo json_encode($response);
-    exit();
-}
-
 
 // else if($endpoint == 'get-one'){
     
@@ -76,4 +51,3 @@ else if($endpoint == 'delete' && $_SERVER["REQUEST_METHOD"] == "POST"){
 
 # Si llega hasta aqui es porque no existe la API
 utilNotFoundMessage();
-    

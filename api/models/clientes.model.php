@@ -28,16 +28,18 @@ class ClientesModel{
     }
 
     /**
-     * Obtener una categoria especifica
+     * Obtener un cliente especifico
      *
-     * @param Int $id Id de la categoria
+     * @param Int $id Id del cliente
      * @return Array|null
      **/
     public static function getById($id)
     {
         $response = null;
-        $sql = "SELECT * FROM users 
-                WHERE id = ".$id;
+        $sql = "SELECT u.id, u.name, u.subname, u.email, u.phone, u.image, u.location_id, l.city, l.province, u.created_at
+                FROM users u
+                    INNER JOIN locations l ON l.id = u.location_id 
+                WHERE u.id = ".$id;
 
         $db = new Database();
 
@@ -62,31 +64,38 @@ class ClientesModel{
     {
         $response = null;
 
-        $validation = true;
-        $requiredFields = [
-            'direccion',
-            'razon_social'
-        ];
-        foreach ($requiredFields as $field) {
-            if(!isset($data[$field]))
-                $validation = false;
-        }
+        // $validation = true;
+        // $requiredFields = [
+        //     'direccion',
+        //     'razon_social'
+        // ];
+        // foreach ($requiredFields as $field) {
+        //     if(!isset($data[$field]))
+        //         $validation = false;
+        // }
 
-        if(!$validation)
-            return [
-                'message' => 'No se enviaron los datos necesarios para crear un nuevo cliente',
-                'status' => 500    
-            ];
+        // if(!$validation)
+        //     return [
+        //         'message' => 'No se enviaron los datos necesarios para crear un nuevo cliente',
+        //         'status' => 500    
+        //     ];
 
         $db = new Database();
         
         #Obtener valores requeridos y ejecutar procedimiento
-        $razon_social = $data['razon_social'];
-        $direccion = $data['direccion'];
-        $sql = "CALL clientes_insert('$razon_social', '$direccion')";
-
+        $name = $data['name'];
+        $subname = $data['subname'];
+        $email = $data['email'];
+        $phone = $data['phone'];
+        $location_id = $data['location_id'];
+        
+        $sql = "INSERT INTO users (name, subname, email, phone, location_id)
+                VALUES
+                    ('$name', '$subname', '$email', '$phone', '$location_id')";
+    
         if($db->getConnectionStatus()){
-            $response = $db->getQuery($sql);
+            // $response = $db->getQuery($sql);
+            $response = $db->execute($sql);
             $db->close();
         }
 
@@ -105,12 +114,25 @@ class ClientesModel{
         $db = new Database();
         
         #Obtener valores requeridos y ejecutar procedimiento
-        $razon_social = $data['razon_social'];
-        $direccion = $data['direccion'];
-        $sql = "CALL clientes_insert('$razon_social', '$direccion')";
+        $id = $data['id'];
+        $name = $data['name'];
+        $subname = $data['subname'];
+        $email = $data['email'];
+        $phone = $data['phone'];
+        $location_id = $data['location_id'];
+
+        // $sql = "CALL clientes_insert('$razon_social', '$direccion')";
+        $sql = "UPDATE users SET
+                    name = '$name',
+                    subname = '$subname',
+                    email = '$email',
+                    phone = '$phone',
+                    location_id = '$location_id'
+                WHERE id = $id";
 
         if($db->getConnectionStatus()){
-            $response = $db->getQuery($sql);
+            // $response = $db->getQuery($sql);
+            $response = $db->execute($sql);
             $db->close();
         }
 
@@ -129,10 +151,16 @@ class ClientesModel{
         $db = new Database();
         
         #Obtener valores requeridos y ejecutar procedimiento
-        $sql = "CALL clientes_delete($id)";
+        // $sql = "CALL clientes_delete($id)";
 
         if($db->getConnectionStatus()){
-            $response = $db->getQuery($sql);
+            $sql = "DELETE FROM stores WHERE user_id = $id";
+            $response = $db->execute($sql);
+
+            $sql = "DELETE FROM users WHERE id = $id";
+            $response = $db->execute($sql);
+            
+            // $response = $db->getQuery($sql);
             $db->close();
         }
 
