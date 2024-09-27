@@ -1,14 +1,13 @@
-async function loadClients(){
-    const clients = await getClients();
-    
-    if(!clients){
-        alert('Ocurrio un error al buscar los clientes')
-        return;
-    }
+//-----------------------------------------------------------
+//--------------------> Funciones <--------------------------
+//-----------------------------------------------------------
 
-    printClients(clients)
-}
-
+/**
+ * Obtener los datos de un cliente especifico 
+ * 
+ * @param {number} id Id del cliente 
+ * @returns {object|null} Objeto del cliente
+ */
 async function getClient(id){
     const data = await fetch(api_base_url + 'clientes.php/get-one?id=' + id)
         .then(res => {
@@ -23,7 +22,12 @@ async function getClient(id){
     return data
 }
 
-
+/**
+ * Eliminar cliente junto a sus datos relacionados
+ * 
+ * @param {number} id id del cliente a eliminar
+ * @returns {boolean} Resultado de la operacion
+ */
 async function deleteClient(id){
     const data = await fetch(api_base_url + 'clientes.php/delete', {
             method: 'POST',
@@ -38,25 +42,57 @@ async function deleteClient(id){
     return data;
 }
 
+/**
+ * Eliminar un cliente con boton de confirmacion
+ * 
+ * @param {Int} id id del usuario 
+ */
+async function deleteClientEvent(id)
+{
+    const options = {
+        title: "Estas seguro de eliminar este cliente?",
+        text: "Perderas toda la informacion relacionada con el mismo y los concesionarios que le pertenecen",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#9e9e9e",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Eliminar"
+    }
 
-async function getLocation(id){
-    const data = await fetch(api_base_url + 'ubicaciones.php/get-one?id=' + id)
-        .then(res => {
-            if(!res.ok) throw new Error('Ocurrio un error en el servidor')
-            return res.json()
-        })
-        .catch(error => {
-            console.log(error);
-            return null
-        })
-    
-    return data
+    Swal.fire(options)
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await deleteClient(id);
+                    
+                    if(response) {
+                        Swal.fire({
+                            title: "Cliente eliminado",
+                            text: "El cliente fue eliminado del sistema junto a toda su informacion",
+                            icon: "success",
+                            confirmButtonColor: '#dcac0c',
+                            confirmButtonText: 'Aceptar',
+                        });
+                    
+                        ad_loadData(getClients(), printClients);
+                    }
+                }
+            });
 }
 
+/**
+ * Imprimir clientes en la tabla #List
+ * 
+ * @param {Object} clients Listado de clientes
+ * - id
+ * - name
+ * - subname
+ * - province
+ */
 function printClients(clients){
     loadPreloader()
     listComponent.innerHTML = '';
-    const fragment = document.createDocumentFragment()
+    const fragment = document.createDocumentFragment();
 
     clients.forEach(client => {
         const tr = document.createElement('tr');
@@ -83,7 +119,8 @@ function printClients(clients){
                             <svg width="17px" height="17px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M3 13C6.6 5 17.4 5 21 13" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         </button>
                         <button class="btn btn-secondary" data-type=\"list-view\" onClick="openModalEdit(${client.id})" data-id=\"${client.id}\" data-bs-toggle="modal" data-bs-target="#manageModal">
-                            <svg width="17px" height="17px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>                        </button>
+                            <svg width="17px" height="17px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        </button>
                         <button class="btn btn-danger" data-type=\"list-delete\" data-id=\"${client.id}\">
                             <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF" stroke-width="1.5"><path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" fill="#FFFF"></path><path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9H20Z" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 6H15.375M3 6H8.625M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6H15.375" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         </button>`;
@@ -96,6 +133,9 @@ function printClients(clients){
     clearPreloader()
 }
 
+/**
+ * Limpiar formulario
+ */
 function clearForm(){
     document.getElementById("name-input").value = "";
     document.getElementById("subname-input").value = "";
@@ -105,10 +145,11 @@ function clearForm(){
     document.getElementById("client-input").value = 0
 }
 
-document.getElementById('manageModal_close').addEventListener('click', (e) =>{
-    e.preventDefault()
-})
-
+/**
+ * Abrir modal #manageModal preparado para editar los datos del cliente indicado
+ * 
+ * @param {Int} id Id del cliente a editar 
+ */
 async function openModalEdit(id){
     document.getElementById('manageModalTitle').textContent = 'Editar cliente #' + id
     
@@ -129,6 +170,10 @@ async function openModalEdit(id){
     }
 }
 
+/**
+ * Abrir modal #manageModal preparado para crear un nuevo cliente
+ * 
+ */
 function openModalCreate(){
     clearForm();
     document.getElementById('manageModalTitle').textContent = 'Agregar nuevo cliente'
@@ -158,48 +203,11 @@ async function openModalView(id){
     }
 }
 
-async function createLocation(data) {
-    if(!data)
-        return;
+//-----------------------------------------------------------
+//-----------------------> Eventos <-------------------------
+//-----------------------------------------------------------
 
-    console.log(data);
-    fetch(api_base_url + 'ubicaciones.php/create', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .catch(err => {
-            console.log(err);
-            return null
-        })
-    
-}
-
-async function validateLocation(id){
-    const data = await getLocation(id)
-
-    if(!data || (data.length == 0)){
-        fetch('https://apis.datos.gob.ar/georef/api/localidades-censales?max=6&campos=provincia.nombre,departamento.nombre&id=' + id)
-            .then(res => res.json())
-            .then(data => {
-                if(data.cantidad > 0){
-                    const city = data.localidades_censales[0]
-                    const body = {
-                        id,
-                        city: city.nombre,
-                        department: city.departamento.nombre,
-                        province: city.provincia.nombre
-                    }
-                    createLocation(body)
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                return null
-            })
-    }
-}
-
+//--------> Manejar envio de formulario para creacion o edicion de cliente
 document.getElementById('manageForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -258,42 +266,25 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
 
 })
 
+//---------> Manejo de eventos click dentro del contenedor #List
 document.getElementById('List').addEventListener('click', e => {
-    if(e.target.dataset.type == 'list-delete'){
-        const options = {
-            title: "Estas seguro de eliminar este cliente?",
-            text: "Perderas toda la informacion relacionada con el mismo y los concesionarios que le pertenecen",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#9e9e9e",
-            cancelButtonText: "Cancelar",
-            confirmButtonText: "Eliminar"
-        }
 
-        Swal.fire(options)
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    const id = e.target.dataset.id;
-                    const response = await deleteClient(id);
-                    
-                    if(response){
-                        Swal.fire({
-                            title: "Cliente eliminado",
-                            text: "El cliente fue eliminado del sistema junto a toda su informacion",
-                            icon: "success",
-                            confirmButtonColor: '#dcac0c',
-                            confirmButtonText: 'Aceptar',
-                        });
-                    
-                        ad_loadData(getClients(), printClients);
-                    }
-                }
-            });
+    //--> Boton eliminar
+    if(e.target.dataset.type == 'list-delete'){
+        deleteClientEvent(e.target.dataset.id)
     }
+
+})
+
+//---------> Cancelar evento por defecto del boton cancelar en #manageModal
+document.getElementById('manageModal_close').addEventListener('click', (e) =>{
+    e.preventDefault()
 })
 
 
+//-----------------------------------------------------------
+//-----------------> Ejecucion del codigo <------------------
+//-----------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 
     ad_loadData(getClients(), printClients);
