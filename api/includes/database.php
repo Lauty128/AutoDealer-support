@@ -1,9 +1,13 @@
 <?php
 
+namespace App\Util;
+
+// Class
+use App\Config\Config;
 
 class Database{
     // Database connection object
-    private mysqli $DB;
+    private \mysqli $DB;
 
     // Configs
     private bool $status;
@@ -38,12 +42,12 @@ class Database{
     {
         try{
             // Instanciar conexion y configurar utf8 para mostrar los datos
-            $this->DB = new mysqli(Config::$DB_HOST, Config::$DB_USER, Config::$DB_PASSWORD, Config::$DB_NAME);
+            $this->DB = new \mysqli(Config::$DB_HOST, Config::$DB_USER, Config::$DB_PASSWORD, Config::$DB_NAME);
             $this->DB->set_charset('utf8');
         
             $this->status = true;
         }
-        catch(mysqli_sql_exception $e){
+        catch(\mysqli_sql_exception $e){
             $this->error_message = "Ocurrio un error al conectarse a la base de datos: ("
                 . $e->getCode() .") ". $e->getMessage();
             
@@ -75,7 +79,7 @@ class Database{
             $this->DB->real_query($sql);
             $result = $this->DB->use_result();
             return $result->fetch_all(MYSQLI_ASSOC);
-        }catch(mysqli_sql_exception $e){
+        }catch(\mysqli_sql_exception $e){
             // En caso de un error se almacenara el mensaje de error y se retornara un Null para que se sepa la existencia de un error
             $this->error_message = "Ocurrio un error durante la ejecucion de la consulta: ("
                 . $e->getCode() .") ". $e->getMessage();

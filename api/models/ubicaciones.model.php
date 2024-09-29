@@ -1,6 +1,12 @@
 <?php
 
-class UbicacionesModel{
+namespace App\Model;
+
+//--> Dependencies
+use App\Util\Database;
+
+
+class Ubicaciones{
 
     /**
      * Obtener una ubicacion especifica

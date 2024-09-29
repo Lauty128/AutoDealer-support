@@ -12,7 +12,7 @@ include 'includes/database.php';
 //include 'models/categorias.model.php';
 //include 'models/pedidos.model.php';
 include 'models/clientes.model.php';
-include 'models/concesionarios.model.php';
+// include 'models/concesionarios.model.php';
 include 'models/ubicaciones.model.php';
 
 

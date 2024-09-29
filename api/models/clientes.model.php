@@ -1,6 +1,12 @@
 <?php
 
-class ClientesModel{
+namespace App\Model;
+
+//--> Dependencies
+use App\Util\Database;
+
+
+class Clientes{
 
     /**
      * Devuele un listado de todas las categorias
