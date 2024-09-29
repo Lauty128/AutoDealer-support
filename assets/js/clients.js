@@ -39,6 +39,12 @@ async function deleteClient(id){
             return null
         })
 
+    // Si la operacion fue exitosa limpiamos cache
+    if(data){
+        sessionStorage.removeItem(cacheKeys.clients);
+        sessionStorage.removeItem(cacheKeys.stores);
+    }
+
     return data;
 }
 
@@ -253,6 +259,11 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
                     showConfirmButton: false,
                     timer: 1500
                   });
+                
+                // Si la operacion fue exitosa limpiamos cache
+                sessionStorage.removeItem(cacheKeys.clients);
+                
+                // Volvemos a cargar el listado
                 ad_loadData(getClients(), printClients);
             } else {
                 Swal.fire({

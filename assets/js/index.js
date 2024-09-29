@@ -3,6 +3,10 @@ const listComponent = document.getElementById('List');
 const typeList = listComponent.dataset.type;
 const preLoader = document.getElementById('preloadMessage');
 
+const cacheKeys = {
+    clients: 'autodealer.admin.clients',
+    stores: 'autodealer.admin.stores',
+}
 
 //-----> Funciones globales
 function manageErrorImage(event){
@@ -79,6 +83,11 @@ async function ad_loadData(service, printFunction){
  * @returns {Array} Array con listado de clientes
  */
 async function getClients(){
+    // Si esta cacheado se devuelve sin consultar a la API
+    if(sessionStorage.getItem(cacheKeys.clients))
+        return JSON.parse(sessionStorage.getItem(cacheKeys.clients))
+
+    // Hacer consulta a la API
     const data = await fetch(api_base_url + 'clientes.php/get')
         .then(res => {
             if(!res.ok) throw new Error('Ocurrio un error en el servidor')
@@ -89,6 +98,11 @@ async function getClients(){
             return null
         })
     
+    console.log('Clientes cacheados..')
+    // Guardar resultado en cache si no es nulo
+    if(data)
+        sessionStorage.setItem(cacheKeys.clients, JSON.stringify(data))
+
     return data
 }
 
@@ -98,6 +112,11 @@ async function getClients(){
  * @returns {Array} Array con listado de concesionarios
  */
 async function getStores(){
+    // Si esta cacheado se devuelve sin consultar a la API
+    if(sessionStorage.getItem(cacheKeys.stores))
+        return JSON.parse(sessionStorage.getItem(cacheKeys.stores))
+
+    // Hacer consulta a la API
     const data = await fetch(api_base_url + 'concesionarios.php/get')
         .then(res => {
             if(!res.ok) throw new Error('Ocurrio un error en el servidor')
@@ -108,6 +127,11 @@ async function getStores(){
             return null
         })
     
+    console.log('Concesionarios cacheados..')
+    // Guardar resultado en cache si no es nulo
+    if(data)
+        sessionStorage.setItem(cacheKeys.stores, JSON.stringify(data))
+
     return data
 }
 
