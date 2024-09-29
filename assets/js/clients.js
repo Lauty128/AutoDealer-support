@@ -142,6 +142,7 @@ function clearForm(){
     document.getElementById("email-input").value = "";
     document.getElementById("phone-input").value = "";
     document.getElementById("location-input").value = "";
+    document.getElementById("password-input").value = "";
     document.getElementById("client-input").value = 0
 }
 
@@ -163,6 +164,8 @@ async function openModalEdit(id){
         document.getElementById("phone-input").value = client.phone
         document.getElementById("location-input").value = client.location_id
         document.getElementById("client-input").value = client.id
+
+        document.getElementById("manageModal-password").style.display = 'none';
         
         closeModalPreloader('manageModalLoader')
     } else {
@@ -176,7 +179,8 @@ async function openModalEdit(id){
  */
 function openModalCreate(){
     clearForm();
-    document.getElementById('manageModalTitle').textContent = 'Agregar nuevo cliente'
+    document.getElementById('manageModalTitle').textContent = 'Agregar nuevo cliente';
+    document.getElementById("manageModal-password").style.display = 'block';
 }
 
 async function openModalView(id){
@@ -218,6 +222,7 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
         email : document.getElementById("email-input").value,
         phone : document.getElementById("phone-input").value,
         location_id : document.getElementById("location-input").value,
+        password : document.getElementById("password-input").value,
     }
     let successMessage = 'Cliente agregado';
 

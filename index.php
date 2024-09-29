@@ -139,6 +139,10 @@
                             </div>
                             <input type="hidden" name="client" id="client-input" value="0">
                         </div>
+                        <div class="mt-3" id="manageModal-password">
+                            <label for="password-input">Contraseña</label>
+                            <input type="password" name="password" id="password-input" class="form-control">
+                        </div>
 
                         <div class="row mt-4 gap-2 justify-content-end me-1">
                             <button class="btn btn-secondary" style="width: fit-content;" id="manageModal_close" data-bs-dismiss="modal" aria-label="Close">

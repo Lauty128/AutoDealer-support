@@ -3,6 +3,9 @@
 namespace App\Model;
 
 //--> Dependencies
+use Bcrypt\Bcrypt;
+
+//--> Utils
 use App\Util\Database;
 
 
@@ -94,10 +97,11 @@ class Clientes{
         $email = $data['email'];
         $phone = $data['phone'];
         $location_id = $data['location_id'];
+        $password = Bcrypt::encrypt($data['password']);
         
-        $sql = "INSERT INTO users (name, subname, email, phone, location_id)
+        $sql = "INSERT INTO users (name, subname, email, phone, location_id, password)
                 VALUES
-                    ('$name', '$subname', '$email', '$phone', '$location_id')";
+                    ('$name', '$subname', '$email', '$phone', '$location_id', '$password')";
     
         if($db->getConnectionStatus()){
             // $response = $db->getQuery($sql);
