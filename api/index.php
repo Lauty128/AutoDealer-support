@@ -9,39 +9,49 @@ $response = [
     'message' => 'Listado de endpoints disponibles',
     'api' => [
         [
-            'name' => 'Categorias',
-            'url' => 'https://'.$host.'/api/categorias.php',
+            'name' => 'Clientes',
+            'url' => 'https://'.$host.'/api/clientes.php',
             'methods' => [
                 [
-                    'url' => 'api/categorias.php/get',
+                    'url' => 'api/clientes.php/get',
                     'method' => 'GET',
-                    'description' => 'Listado de todas las categorias'
+                    'description' => 'Listado de todos los clientes'
                 ],
                 [
-                    'url' => 'api/categorias.php/get-one',
+                    'url' => 'api/clientes.php/get-one',
                     'method' => 'GET',
-                    'description' => 'Informacion sobre una categoria'
+                    'description' => 'Informacion sobre un cliente'
+                ],
+                [
+                    'url' => 'api/clientes.php/delete',
+                    'method' => 'POST',
+                    'description' => 'Remover un cliente del sistems'
+                ],
+                [
+                    'url' => 'api/clientes.php/create',
+                    'method' => 'POST',
+                    'description' => 'Crear un nuevo cliente'
+                ],
+                [
+                    'url' => 'api/clientes.php/update',
+                    'method' => 'POST',
+                    'description' => 'Actualizar datos del cliente'
                 ]
             ]
         ],
         [
-            'name' => 'Pedidos',
-            'url' => 'https://'.$host.'/api/pedidos.php',
+            'name' => 'Ubicaciones',
+            'url' => 'https://'.$host.'/api/ubicaciones.php',
             'metodos' => [
                 [
-                    'url' => 'api/pedidos.php/get',
+                    'url' => 'api/ubicaciones.php/get-one',
                     'method' => 'GET',
-                    'description' => 'Listado de todos los pedidos'
+                    'description' => 'Obtener los datos de una ubicación almacenada el sistema'
                 ],
                 [
-                    'url' => 'api/pedidos.php/get-pendientes',
-                    'method' => 'GET',
-                    'description' => 'Listado de todos los pedidos pendientes'
-                ],
-                [
-                    'url' => 'api/pedidos.php/get-one',
-                    'method' => 'GET',
-                    'description' => 'Informacion sobre una categoria'
+                    'url' => 'api/ubicaciones.php/create',
+                    'method' => 'POST',
+                    'description' => 'Almacenar una nueva ubicación en el sistema'
                 ]
             ]
         ]

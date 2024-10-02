@@ -14,6 +14,13 @@ function manageErrorImage(event){
     event.target.setAttribute('src', defaultImageUrl)
 }
 
+function clearForm(id){
+    const form = document.getElementById(id)
+    if(form)
+        form.reset()
+    // manageForm
+}
+
 /**
  * Limpiar preloader de Lista (#list)
  */

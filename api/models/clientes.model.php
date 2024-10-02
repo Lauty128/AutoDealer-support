@@ -150,7 +150,7 @@ class Clientes{
     }
 
     /**
-     * Eliminar un cliente
+     * Eliminar un cliente junto a todos sus datos relacionados
      *
      * @param int $id Id del cliente a eliminar
      * @return Array|null

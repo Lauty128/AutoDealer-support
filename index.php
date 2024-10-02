@@ -26,7 +26,10 @@
 
         <div class="ad__filtersContainer">
             <form action="">
-                <input type="text" class="form-control" name="search" placeholder="Nombre, apellido, dni..." id="FilterInput">
+                <div class="col">
+                    <label for="FilterInput" class="ms-1">Buscador</label>
+                    <input type="text" class="form-control" name="search" placeholder="Nombre, apellido, dni..." id="FilterInput">
+                </div>
                 <button type="submit">
                     <svg width="18px" height="18px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M17 17L21 21" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
@@ -105,7 +108,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="manageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="manageModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -137,7 +140,7 @@
                                 <label for="location-input">Ubicación</label>
                                 <input type="text" name="location" id="location-input" class="form-control">
                             </div>
-                            <input type="hidden" name="client" id="client-input" value="0">
+                            <input type="hidden" name="id" id="id-input" value="0">
                         </div>
                         <div class="mt-3" id="manageModal-password">
                             <label for="password-input">Contraseña</label>

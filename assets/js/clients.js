@@ -149,7 +149,7 @@ function clearForm(){
     document.getElementById("phone-input").value = "";
     document.getElementById("location-input").value = "";
     document.getElementById("password-input").value = "";
-    document.getElementById("client-input").value = 0
+    document.getElementById("id-input").value = 0
 }
 
 /**
@@ -169,7 +169,7 @@ async function openModalEdit(id){
         document.getElementById("email-input").value = client.email
         document.getElementById("phone-input").value = client.phone
         document.getElementById("location-input").value = client.location_id
-        document.getElementById("client-input").value = client.id
+        document.getElementById("id-input").value = client.id
 
         document.getElementById("manageModal-password").style.display = 'none';
         
@@ -232,7 +232,7 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
     }
     let successMessage = 'Cliente agregado';
 
-    const clientId = +document.getElementById("client-input").value
+    const clientId = +document.getElementById("id-input").value
 
     if(clientId){
         fn = 'update';
