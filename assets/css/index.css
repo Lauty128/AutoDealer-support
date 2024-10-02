@@ -51,11 +51,39 @@ button svg{
 .menu__links{
     width: 100%;
     display: flex;
-    gap: 20px;
+    gap: 30px;
     flex-direction: column;
     margin-top: 30px;
     padding: 0 10%;
 }
+.menu__links a{
+   text-decoration: none;
+   color: #444444; 
+   position: relative;
+   padding-bottom: 6px;
+}
+.menu__links a::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #dcac0c;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s;
+}
+.menu__links a:hover:after{
+    transform: scaleX(1);
+}
+
+.menu__links a svg{
+    vertical-align: bottom;
+    margin-right: 4px;
+}
+
+
 
 .ad{
     /* width: 100%; */
@@ -105,6 +133,7 @@ button svg{
 .ad__filtersContainer form{
     width: 100%;
     display: flex;
+    align-items: flex-end;
     gap: 6px;
     margin-bottom: 10px;
 }
@@ -120,6 +149,8 @@ button svg{
     align-items: center;
     justify-content: center;
     padding: 5px 15px;
+    height: 40px;
+    margin-bottom: 2px;
 }
 .ad__filtersContainer form button:hover{
     background-color: var(--primary-color);
