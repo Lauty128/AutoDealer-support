@@ -1,6 +1,6 @@
 //-----> Constantes globales
 const listComponent = document.getElementById('List');
-const typeList = listComponent.dataset.type;
+// const typeList = listComponent.dataset.type;
 const preLoader = document.getElementById('preloadMessage');
 
 const cacheKeys = {

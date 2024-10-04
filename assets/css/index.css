@@ -78,6 +78,10 @@ button svg{
     transform: scaleX(1);
 }
 
+.menu__link--active::after{
+    transform: scaleX(1) !important;
+}
+
 .menu__links a svg{
     vertical-align: bottom;
     margin-right: 4px;
