@@ -76,10 +76,14 @@
                 </div>
                 <div class="modal-body viewModal-body">
                     <img src="<?= constant('storage_base_url') ?>/not-found.png" onerror="manageErrorImage(event)" style="width: 150px; height: 100px; object-fit:cover">
-                    <div class="row mt-3">
-                        <div class="col">
+                    <div class="col mt-3">
                             <span>Nombre</span>
                             <p id="viewModal-name"></p>
+                        </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <span>Nombre usuario</span>
+                            <p id="viewModal-username"></p>
                         </div>
                         <div class="col">
                             <span>Dueño</span>
@@ -170,7 +174,7 @@
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="name-input">Usuario</label>
-                                <input type="text" name="name" id="name-input" class="form-control">
+                                <input type="text" name="username" id="username-input" class="form-control">
                             </div>
                             <div class="col">
                                 <label for="client-input" class="ms-1">Cliente</label>

@@ -192,10 +192,11 @@ async function openModalView(id){
         
         document.querySelector('#viewModal img').setAttribute('src', vimage)
         document.getElementById('viewModal-name').textContent = store.name
+        document.getElementById('viewModal-username').textContent = store.username
         document.getElementById('viewModal-owner').innerHTML = `<a href="/?open=${store.user_id}">` + store.user_name + '</a>'
         document.getElementById('viewModal-email').textContent = store.email
         document.getElementById('viewModal-phone').textContent = store.phone
-        document.getElementById('viewModal-location').innerHTML = '#' + store.location_id + '<br/>' + store.city + ', ' + store.province
+        document.getElementById('viewModal-location').innerHTML = store.city + ', ' + store.province
         document.getElementById('viewModal-address').textContent = store.address
         document.getElementById('viewModal-currency').textContent = store.price_currency
         document.getElementById('viewModal-dolar').textContent = dolar_conversion
