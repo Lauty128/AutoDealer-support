@@ -1,14 +1,14 @@
 <?php
     include "config.php";
+    include "session/validate.php";
     
-    $customers = array(1,2,3,4,5,6,7);
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <?php include 'components/head.php'; ?>
-    <title>AutoDealer | Clientes</title>
+    <title>AutoDealer | Configuraciones</title>
 </head>
 
 <body>

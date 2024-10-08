@@ -1,6 +1,7 @@
 <?php
     include "config.php";
-    
+    include "session/validate.php";
+
     $customers = array(1,2,3,4,5,6,7);
 ?>
 
@@ -87,6 +88,8 @@
                             <p id="viewModal-location"></p>
                         </div>
                     </div>
+
+                    <hr>
 
                     <div class="mt-2">
                         <h5 style="font-size: 1em">Operaciones</h5>
