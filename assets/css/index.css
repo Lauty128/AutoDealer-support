@@ -38,6 +38,9 @@ button svg{
     pointer-events: none;
 }
 
+iframe{
+    max-width: 100%;
+}
 
 .menu{
     width: 300px;

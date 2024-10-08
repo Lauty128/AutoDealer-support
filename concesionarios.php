@@ -1,4 +1,5 @@
 <?php
+    include "session/validate.php";
     include "config.php";
     
     $customers = array(1,2,3,4,5,6,7);
@@ -67,42 +68,78 @@
     
     <!-- Modal -->
     <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewModalTitle"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body viewModal-body">
-                    <img src="<?= constant('storage_base_url') ?>/not-found.png" onerror="manageErrorImage(event)" style="width: 100px; height: 100px; object-fit:cover">
-                    <div class="mt-3">
-                        <span>Nombre</span>
-                        <p id="viewModal-name"></p>
-                    </div>
-                    <div class="mt-3">
-                        <span>Correo electronico</span>
-                        <p id="viewModal-email"></p>
+                    <img src="<?= constant('storage_base_url') ?>/not-found.png" onerror="manageErrorImage(event)" style="width: 150px; height: 100px; object-fit:cover">
+                    <div class="row mt-3">
+                        <div class="col">
+                            <span>Nombre</span>
+                            <p id="viewModal-name"></p>
+                        </div>
+                        <div class="col">
+                            <span>Dueño</span>
+                            <p id="viewModal-owner"></p>
+                        </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-6">
+                        <div class="col">
+                            <span>Correo electronico</span>
+                            <p id="viewModal-email"></p>
+                        </div>
+                        <div class="col">
                             <span>Telefono</span>
                             <p id="viewModal-phone"></p>
                         </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-6">
                             <span>Ubicación</span>
                             <p id="viewModal-location"></p>
                         </div>
+                        <div class="col-6">
+                            <span>Dirección</span>
+                            <p id="viewModal-address"></p>
+                        </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <span>Moneda</span>
+                            <p id="viewModal-currency"></p>
+                        </div>
+                        <div class="col-6">
+                            <span>Conversión de dolar</span>
+                            <p id="viewModal-dolar"></p>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <span>Descripción</span>
+                        <p id="viewModal-description" style="font-size: .9em"></p>
+                    </div>
+
+                    <div class="mt-3">
+                        <span>Mapa</span>
+                        <p id="viewModal-map"></p>
+                    </div>
+
+                    <hr>
 
                     <div class="mt-2">
                         <h5 style="font-size: 1em">Operaciones</h5>
                         <div class="d-flex gap-2 mt-2">
-                            <button class="btn btn-secondary" style="font-size: .75em">
-                                Ver concesionarios
+                            <button class="btn btn-secondary" style="font-size: .75em; padding: 0">
+                                <a href="" id="viewModal-op-view" target="_blank" style="display: block; padding: 5px 14px; color: #fff">
+                                    Ver pagina
+                                </a>
                             </button>
-                            <button class="btn btn-secondary" style="font-size: .75em">
+                            <!-- <button class="btn btn-secondary" style="font-size: .75em">
                                 Cambiar contraseña
-                            </button>
+                            </button> -->
                         </div>
                     </div>
 
@@ -228,6 +265,8 @@
 
     <script>
         const api_base_url = '<?= constant('api_base_url') ?>';
+        const base_url = '<?= constant('base_url') ?>';
+        const system_base_url = '<?= constant('system_base_url') ?>';
         const storage_base_url = '<?= constant('storage_base_url') ?>';
     </script>
 

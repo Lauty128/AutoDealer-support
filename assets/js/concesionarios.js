@@ -8,8 +8,8 @@
  * @param {number} id Id del cliente 
  * @returns {object|null} Objeto del cliente
  */
-async function getClient(id){
-    const data = await fetch(api_base_url + 'clientes.php/get-one?id=' + id)
+async function getStore(id){
+    const data = await fetch(api_base_url + 'concesionarios.php/get-one?id=' + id)
         .then(res => {
             if(!res.ok) throw new Error('Ocurrio un error en el servidor')
             return res.json()
@@ -28,8 +28,8 @@ async function getClient(id){
  * @param {number} id id del cliente a eliminar
  * @returns {boolean} Resultado de la operacion
  */
-async function deleteClient(id){
-    const data = await fetch(api_base_url + 'clientes.php/delete', {
+async function deleteStore(id){
+    const data = await fetch(api_base_url + 'concesionarios.php/delete', {
             method: 'POST',
             body: JSON.stringify({ id })
         })
@@ -117,10 +117,10 @@ function printStores(stores){
         
         td = document.createElement('td')
         td.classList.add('col-3')
-        td.innerHTML = `<button class="btn btn-primary" data-type=\"list-view\" onClick="openModalView(${store.id})" data-id=\"${store.id}\" data-bs-toggle="modal" data-bs-target="#viewModal">
+        td.innerHTML = `<button class="btn btn-primary" data-type=\"list-view\" onClick="openModalView('${store.id}')" data-id=\"${store.id}\" data-bs-toggle="modal" data-bs-target="#viewModal">
                             <svg width="17px" height="17px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M3 13C6.6 5 17.4 5 21 13" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         </button>
-                        <button class="btn btn-secondary" data-type=\"list-view\" onClick="openModalEdit(${store.id})" data-id=\"${store.id}\" data-bs-toggle="modal" data-bs-target="#manageModal">
+                        <button class="btn btn-secondary" data-type=\"list-edit\" onClick="openModalEdit('${store.id}')" data-id=\"${store.id}\" data-bs-toggle="modal" data-bs-target="#manageModal">
                             <svg width="17px" height="17px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#FFFF"><path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="#FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         </button>
                         <button class="btn btn-danger" data-type=\"list-delete\" data-id=\"${store.id}\">
@@ -168,22 +168,41 @@ function openModalCreate(){
 }
 
 async function openModalView(id){
-    document.getElementById('viewModalTitle').textContent = 'Cliente #' + id
+    document.getElementById('viewModalTitle').innerHTML = '#' + id
     
     loadModalPreloader('viewModalLoader', 'Cargando...')
-    const client = await getClient(id)
+    const store = await getStore(id)
 
-    if(client){
-        // Configurar datos del cliente
-        const vimage = (client.image)
-                        ? storage_base_url + '/users/' + client.id + '/' + client.image
+
+    if(store){
+        // Propiedades
+        let dolar_conversion = "Sin especificar";
+        if(store.dolar_conversion){
+            dolar_conversion = new Intl.NumberFormat("es-ES", {
+                            style: "currency",
+                            currency: store.price_currency,
+                            maximumFractionDigits: 0
+                        }).format(store.dolar_conversion)
+        }
+
+        // Configurar datos del storee
+        const vimage = (store.image)
+                        ? storage_base_url + '/images/' + store.id + '/' + store.image
                         : storage_base_url + '/not-found.png'
         
         document.querySelector('#viewModal img').setAttribute('src', vimage)
-        document.getElementById('viewModal-name').textContent = client.name + ' ' + client.subname
-        document.getElementById('viewModal-email').textContent = client.email
-        document.getElementById('viewModal-phone').textContent = client.phone
-        document.getElementById('viewModal-location').textContent = client.city + ', ' + client.province
+        document.getElementById('viewModal-name').textContent = store.name
+        document.getElementById('viewModal-owner').innerHTML = `<a href="/?open=${store.user_id}">` + store.user_name + '</a>'
+        document.getElementById('viewModal-email').textContent = store.email
+        document.getElementById('viewModal-phone').textContent = store.phone
+        document.getElementById('viewModal-location').innerHTML = '#' + store.location_id + '<br/>' + store.city + ', ' + store.province
+        document.getElementById('viewModal-address').textContent = store.address
+        document.getElementById('viewModal-currency').textContent = store.price_currency
+        document.getElementById('viewModal-dolar').textContent = dolar_conversion
+        document.getElementById('viewModal-description').textContent = store.description
+        document.getElementById('viewModal-map').innerHTML = store.map || "Sin mapa"
+        
+        document.getElementById('viewModal-op-view').setAttribute('href', `${system_base_url}concesionario/${store.username}`)
 
         closeModalPreloader('viewModalLoader')
     } else {

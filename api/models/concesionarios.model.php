@@ -45,10 +45,11 @@ class Concesionario{
     public static function getById($id)
     {
         $response = null;
-        $sql = "SELECT u.id, u.name, u.subname, u.email, u.phone, u.image, u.location_id, l.city, l.province, u.created_at
-                FROM users u
-                    INNER JOIN locations l ON l.id = u.location_id 
-                WHERE u.id = ".$id;
+        $sql = "SELECT s.*, l.city, l.department, l.province, CONCAT(u.name,' ',u.subname) AS user_name
+                FROM stores s
+                    INNER JOIN users u ON u.id = s.user_id 
+                    INNER JOIN locations l ON l.id = s.location_id 
+                WHERE s.id = '$id'";
 
         $db = new Database();
 
@@ -56,7 +57,6 @@ class Concesionario{
             $response = $db->getQuery($sql);
             $db->close();
         }
-
         if($response && count($response) == 1)
             $response = $response[0];
 
