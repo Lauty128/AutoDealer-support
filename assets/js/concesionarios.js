@@ -53,11 +53,11 @@ async function deleteStore(id){
  * 
  * @param {Int} id id del usuario 
  */
-async function deleteClientEvent(id)
+async function deleteStoreEvent(id)
 {
     const options = {
-        title: "Estas seguro de eliminar este cliente?",
-        text: "Perderas toda la informacion relacionada con el mismo y los concesionarios que le pertenecen",
+        title: "Estas seguro de eliminar este concesionario?",
+        text: "Perderas toda la informacion relacionada con el mismo",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -69,18 +69,18 @@ async function deleteClientEvent(id)
     Swal.fire(options)
             .then(async (result) => {
                 if (result.isConfirmed) {
-                    const response = await deleteClient(id);
+                    const response = await deleteStore(id);
                     
                     if(response) {
                         Swal.fire({
-                            title: "Cliente eliminado",
-                            text: "El cliente fue eliminado del sistema junto a toda su informacion",
+                            title: "Concesionario eliminado",
+                            text: "El concesionario fue eliminado del sistema junto a toda su informacion",
                             icon: "success",
                             confirmButtonColor: '#dcac0c',
                             confirmButtonText: 'Aceptar',
                         });
                     
-                        ad_loadData(getClients(), printClients);
+                        ad_loadData(getStores(), printStores);
                     }
                 }
             });
@@ -144,13 +144,24 @@ async function openModalEdit(id){
     document.getElementById('manageModalTitle').textContent = 'Editar cliente #' + id
     
     loadModalPreloader('manageModalLoader', 'Cargando...')
-    const client = await getClient(id);
+    const store = await getStore(id);
     
-    if(client) {
-        document.getElementById("name-input").value = client.name
-        document.getElementById("email-input").value = client.email
-        document.getElementById("phone-input").value = client.phone
-        document.getElementById("location-input").value = client.location_id
+    if(store) {
+        document.getElementById("id-input").value = store.id
+        document.getElementById("name-input").value = store.name
+        document.getElementById("email-input").value = store.email
+        document.getElementById("username-input").value = store.username
+        document.getElementById("address-input").value = store.address
+        document.getElementById("map-input").value = store.map
+        document.getElementById("description-input").textContent = store.description
+        document.getElementById("phone-input").value = store.phone
+        document.getElementById("location-input").value = store.location_id
+        document.getElementById("dolar_conversion-input").value = store.dolar_conversion
+
+        markOption('client-input', store.user_id)
+        markOption('price_currency-input', store.price_currency)
+        markOption('personal_info-input', store.personal_info)
+        markOption('message_notify-input', store.message_notify)
 
         closeModalPreloader('manageModalLoader')
     } else {
@@ -164,6 +175,9 @@ async function openModalEdit(id){
  */
 function openModalCreate(){
     clearForm('manageForm');
+    document.getElementById('description-input').textContent = ''
+
+    document.getElementById("id-input").value = 0
     document.getElementById('manageModalTitle').textContent = 'Agregar nuevo concesionario';
 }
 
@@ -232,6 +246,13 @@ async function loadUsersOptions(id){
     select.appendChild(fragment)
 }
 
+function markOption(idSelect, correctValue){
+    document.querySelectorAll(`#${idSelect} option`).forEach(element => {
+        console.log(element);
+        if(element.value == correctValue) element.checked = 1;
+    })
+}
+
 //-----------------------------------------------------------
 //-----------------------> Eventos <-------------------------
 //-----------------------------------------------------------
@@ -241,27 +262,22 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
     event.preventDefault();
 
     let fn = 'create';
-    const data = {
-        name : document.getElementById("name-input").value,
-        email : document.getElementById("email-input").value,
-        phone : document.getElementById("phone-input").value,
-        location_id : document.getElementById("location-input").value,
-    }
-    let successMessage = 'Cliente agregado';
+    const form = new FormData(document.getElementById('manageForm'));
+    
+    let successMessage = 'Concesionario agregado';
 
-    const clientId = +document.getElementById("id-input").value
+    const store_id = +document.getElementById("id-input").value
 
-    if(clientId){
+    if(store_id != 0){
         fn = 'update';
-        data.id = clientId;
-        successMessage = 'Datos actualizados';
+        successMessage = 'Concesionario actualizado'
     }
 
-    validateLocation(data.location_id)
+    validateLocation(form.get('location'))
 
-    fetch(api_base_url + 'clientes.php/' + fn, {
-            method: 'POST',
-            body: JSON.stringify(data)
+    fetch(api_base_url + 'concesionarios.php/' + fn, {
+            body: form,
+            method: 'POST'
         })
         .then(res => res.json())
         .then(data => {
@@ -278,10 +294,10 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
                   });
                 
                 // Si la operacion fue exitosa limpiamos cache
-                sessionStorage.removeItem(cacheKeys.clients);
+                sessionStorage.removeItem(cacheKeys.stores);
                 
                 // Volvemos a cargar el listado
-                ad_loadData(getClients(), printClients);
+                ad_loadData(getStores(), printStores);
             } else {
                 Swal.fire({
                     position: "top-end",
@@ -304,7 +320,7 @@ document.getElementById('List').addEventListener('click', e => {
 
     //--> Boton eliminar
     if(e.target.dataset.type == 'list-delete'){
-        deleteClientEvent(e.target.dataset.id)
+        deleteStoreEvent(e.target.dataset.id)
     }
 
 })

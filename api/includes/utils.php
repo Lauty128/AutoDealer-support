@@ -52,3 +52,49 @@ function utilGenerateErrorMessage($state, $message){
     echo json_encode($response);
     exit();
 }
+
+function generarCodigo($longitud) {
+    $caracteres_permitidos = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return substr(str_shuffle($caracteres_permitidos), 0, $longitud);
+}
+
+function createTable($table, $data){
+    $sql = "INSERT `$table` (";
+
+    foreach ($data as $key => $value) {
+        $sql .= "$key, ";        
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= ") VALUES (";
+
+    foreach ($data as $key => $value) {
+        if(gettype($value) == 'string'){
+            $sql .= "'$value', ";
+        } else {
+            $sql .= "$value, ";
+        }
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= ")";
+
+    return $sql;
+}
+
+function updateTable($table, $id, $data){
+    $sql = "UPDATE `$table` SET ";
+
+    foreach ($data as $key => $value) {
+        if(gettype($value) == 'string'){
+            $sql .= "`$key` = '$value', ";
+        } else {
+            $sql .= "`$key` = $value, ";
+        }
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= " WHERE id = '$id'";
+
+    return $sql;
+}

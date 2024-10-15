@@ -55,7 +55,7 @@ else if($endpoint == 'create' && $_SERVER["REQUEST_METHOD"] == "POST"){
 else if($endpoint == 'update' && $_SERVER["REQUEST_METHOD"] == "POST"){
     $data = json_decode($request, true);
 
-    $response = Concesionario::create($data);
+    $response = Concesionario::update($data);
 
     echo json_encode($response);
     exit();

@@ -164,6 +164,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="manageForm">
+                        <input type="hidden" name="id" id="id-input" value="0">
                         <div class="mt-4 mb-5">
                             <input type="file" name="image" accept="image/*">
                         </div>
@@ -178,7 +179,7 @@
                             </div>
                             <div class="col">
                                 <label for="client-input" class="ms-1">Cliente</label>
-                                <select name="user" id="client-input" class="form-select">
+                                <select name="user_id" id="client-input" class="form-select">
                                     <!-- Options -->
                                 </select>
                             </div>
@@ -207,7 +208,7 @@
                         </div>
                         <div class="col mt-3">
                             <label for="location-input">Descripción</label>
-                            <textarea name="description" id="description-id" rows="4" class="form-control"></textarea>
+                            <textarea name="description" id="description-input" rows="4" class="form-control"></textarea>
                         </div>
 
                         <br>

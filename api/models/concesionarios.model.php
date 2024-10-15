@@ -72,36 +72,28 @@ class Concesionario{
     public static function create($data)
     {
         $response = null;
-
-        // $validation = true;
-        // $requiredFields = [
-        //     'direccion',
-        //     'razon_social'
-        // ];
-        // foreach ($requiredFields as $field) {
-        //     if(!isset($data[$field]))
-        //         $validation = false;
-        // }
-
-        // if(!$validation)
-        //     return [
-        //         'message' => 'No se enviaron los datos necesarios para crear un nuevo cliente',
-        //         'status' => 500    
-        //     ];
-
         $db = new Database();
         
         #Obtener valores requeridos y ejecutar procedimiento
-        $name = $data['name'];
-        $subname = $data['subname'];
-        $email = $data['email'];
-        $phone = $data['phone'];
-        $location_id = $data['location_id'];
+        $data = [
+            'id' => generarCodigo(20),
+            'name' => $_POST['name'],
+            'username' => $_POST['username'],
+            'user_id' => $_POST['user'],
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone'],
+            'location_id' => $_POST['location'],
+            'address' => $_POST['address'],
+            'map' => ($_POST['map']) ? $_POST['map'] : "",
+            'description' => ($_POST['description']) ? $_POST['description'] : "",
+            'price_currency' => $_POST['price_currency'],
+            'dolar_conversion' => $_POST['dolar_conversion'],
+            'personal_info' => $_POST['personal_info'],
+            'message_notify' => $_POST['message_notify'],
+        ];
         
-        $sql = "INSERT INTO users (name, subname, email, phone, location_id)
-                VALUES
-                    ('$name', '$subname', '$email', '$phone', '$location_id')";
-    var_dump($sql);
+        $sql = createTable('stores', $data);
+
         if($db->getConnectionStatus()){
             // $response = $db->getQuery($sql);
             $response = $db->execute($sql);
@@ -119,16 +111,33 @@ class Concesionario{
     **/
     public static function update($data)
     {
+        
         $response = null;
         $db = new Database();
         
         #Obtener valores requeridos y ejecutar procedimiento
-        $razon_social = $data['razon_social'];
-        $direccion = $data['direccion'];
-        $sql = "CALL clientes_insert('$razon_social', '$direccion')";
+        $id = $_POST['id'];
+        $data = [
+            'name' => $_POST['name'],
+            'username' => $_POST['username'],
+            'user_id' => $_POST['user_id'],
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone'],
+            'location_id' => $_POST['location'],
+            'address' => $_POST['address'],
+            'map' => ($_POST['map']) ? $_POST['map'] : "",
+            'description' => ($_POST['description']) ? $_POST['description'] : "",
+            'price_currency' => $_POST['price_currency'],
+            'dolar_conversion' => $_POST['dolar_conversion'],
+            'personal_info' => $_POST['personal_info'],
+            'message_notify' => $_POST['message_notify']
+        ];
+
+        $sql = updateTable('stores', $id, $data);
 
         if($db->getConnectionStatus()){
-            $response = $db->getQuery($sql);
+            // $response = $db->getQuery($sql);
+            $response = $db->execute($sql);
             $db->close();
         }
 
@@ -136,9 +145,9 @@ class Concesionario{
     }
 
     /**
-     * Eliminar un cliente
+     * Eliminar un concesionario
      *
-     * @param int $id Id del cliente a eliminar
+     * @param int $id Id del concesionario a eliminar
      * @return Array|null
     **/
     public static function delete($id)
@@ -150,10 +159,7 @@ class Concesionario{
         // $sql = "CALL clientes_delete($id)";
 
         if($db->getConnectionStatus()){
-            $sql = "DELETE FROM stores WHERE user_id = $id";
-            $response = $db->execute($sql);
-
-            $sql = "DELETE FROM users WHERE id = $id";
+            $sql = "DELETE FROM stores WHERE id = '$id'";
             $response = $db->execute($sql);
             
             // $response = $db->getQuery($sql);
