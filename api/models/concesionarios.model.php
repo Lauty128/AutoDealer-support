@@ -11,11 +11,11 @@ use App\Util\Database;
 class Concesionario{
 
     /**
-     * Devuele un listado de todas las categorias
+     * Obtener un listado de todos los concesionarios
      *
      * @return array|null
      **/
-    public static function getAll($xData = [])
+    public static function getAll()
     {
         $response = null;
         $db = new Database();
@@ -26,7 +26,7 @@ class Concesionario{
                     INNER JOIN users u ON u.id = s.user_id
                     INNER JOIN locations l ON s.location_id = l.id";
 
-        if(isset($xData['filter'])) $sql.= ' WHERE '.$xData['filter'];
+        //if(isset($xData['filter'])) $sql.= ' WHERE '.$xData['filter'];
 
         if($db->getConnectionStatus()){
             $response = $db->getQuery($sql);
@@ -37,9 +37,9 @@ class Concesionario{
     }
 
     /**
-     * Obtener una categoria especifica
+     * Obtener datos de un concesionario especifico
      *
-     * @param Int $id Id de la categoria
+     * @param Int $id Id del concesionario
      * @return Array|null
      **/
     public static function getById($id)
@@ -64,7 +64,7 @@ class Concesionario{
     }
 
     /**
-     * Crear un cliente
+     * Crear un concesionario nuevo
      *
      * @param Array $data Datos del body
      * @return Array|null
@@ -74,28 +74,10 @@ class Concesionario{
         $response = null;
         $db = new Database();
         
-        #Obtener valores requeridos y ejecutar procedimiento
-        $data = [
-            'id' => generarCodigo(20),
-            'name' => $_POST['name'],
-            'username' => $_POST['username'],
-            'user_id' => $_POST['user'],
-            'email' => $_POST['email'],
-            'phone' => $_POST['phone'],
-            'location_id' => $_POST['location'],
-            'address' => $_POST['address'],
-            'map' => ($_POST['map']) ? $_POST['map'] : "",
-            'description' => ($_POST['description']) ? $_POST['description'] : "",
-            'price_currency' => $_POST['price_currency'],
-            'dolar_conversion' => $_POST['dolar_conversion'],
-            'personal_info' => $_POST['personal_info'],
-            'message_notify' => $_POST['message_notify'],
-        ];
-        
+        // Generar sql
         $sql = createTable('stores', $data);
-
+    
         if($db->getConnectionStatus()){
-            // $response = $db->getQuery($sql);
             $response = $db->execute($sql);
             $db->close();
         }
@@ -104,39 +86,20 @@ class Concesionario{
     }
 
     /**
-     * Actualizar un cliente
+     * Actualizar un concesionario
      *
      * @param Array $data Datos del body
      * @return Array|null
     **/
-    public static function update($data)
+    public static function update($id, $data)
     {
-        
         $response = null;
         $db = new Database();
-        
-        #Obtener valores requeridos y ejecutar procedimiento
-        $id = $_POST['id'];
-        $data = [
-            'name' => $_POST['name'],
-            'username' => $_POST['username'],
-            'user_id' => $_POST['user_id'],
-            'email' => $_POST['email'],
-            'phone' => $_POST['phone'],
-            'location_id' => $_POST['location'],
-            'address' => $_POST['address'],
-            'map' => ($_POST['map']) ? $_POST['map'] : "",
-            'description' => ($_POST['description']) ? $_POST['description'] : "",
-            'price_currency' => $_POST['price_currency'],
-            'dolar_conversion' => $_POST['dolar_conversion'],
-            'personal_info' => $_POST['personal_info'],
-            'message_notify' => $_POST['message_notify']
-        ];
 
+        // Generar sql
         $sql = updateTable('stores', $id, $data);
 
         if($db->getConnectionStatus()){
-            // $response = $db->getQuery($sql);
             $response = $db->execute($sql);
             $db->close();
         }
@@ -154,15 +117,12 @@ class Concesionario{
     {
         $response = null;
         $db = new Database();
-        
-        #Obtener valores requeridos y ejecutar procedimiento
-        // $sql = "CALL clientes_delete($id)";
 
         if($db->getConnectionStatus()){
-            $sql = "DELETE FROM stores WHERE id = '$id'";
-            $response = $db->execute($sql);
+            // Eliminar concesionario
+            $sql = "DELETE FROM stores WHERE id = ?";
+            $response = $db->execute($sql, [$id]);
             
-            // $response = $db->getQuery($sql);
             $db->close();
         }
 

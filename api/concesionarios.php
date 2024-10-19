@@ -4,11 +4,9 @@
 require __DIR__ . '/vendor/autoload.php'; # Composer
 require 'config/autoload.php'; # Local
 
-//----> Dependencies
-
-//----> Models
+//----> Controllers
+use App\Controller\ConcesionariosController;
 use App\Model\Concesionario;
-
 
 //----> Ejecucion de API
 # Obtener url
@@ -18,11 +16,45 @@ $endpoint = $aUrl[count($aUrl) - 1]; # Acceder a ultima posicion
 
 # Obtener datos de la peticion
 $request = file_get_contents('php://input');
+// Solo usar si los datos son enviados en formato JSON
+$data = json_decode($request, true);
+
+//----> Endpoints
+# Obtener listado de todos los concesionarios
+if($endpoint == 'get'){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'getAll');
+}
+# Obtener listado de los concesionarios de un cliente
+if($endpoint == 'get'){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'getAllByClient');
+}
+# Obtener datos de un concesionario
+else if($endpoint == 'get-one'){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'getOne');
+}
+# Crear un concesionario nuevo
+else if($endpoint == 'create' && $_SERVER["REQUEST_METHOD"] == "POST"){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'create');
+}
+# Actualizar datos de un concesionario
+else if($endpoint == 'update' && $_SERVER["REQUEST_METHOD"] == "POST"){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'update');
+}
+# Eliminar concesionario junto a sus concesionarios
+else if($endpoint == 'delete' && $_SERVER["REQUEST_METHOD"] == "POST"){
+    $controller = new ConcesionariosController();
+    utilExecuteController($controller, 'delete');
+}
+
 
 # Endpoints
 if($endpoint == 'get'){
-    $data = json_decode($request, true);
-    $response = Concesionario::getAll($data ?? []);
+    $response = Concesionario::getAll();
 
     echo json_encode($response);
     exit();
@@ -46,7 +78,7 @@ else if($endpoint == 'get-one'){
 else if($endpoint == 'create' && $_SERVER["REQUEST_METHOD"] == "POST"){
     $data = json_decode($request, true);
 
-    $response = Concesionario::create($data);
+    $response = Concesionario::create();
 
     echo json_encode($response);
     exit();

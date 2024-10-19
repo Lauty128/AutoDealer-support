@@ -195,7 +195,7 @@
                             </div>
                             <div class="col-6">
                                 <label for="location-input">Ubicación</label>
-                                <input type="text" name="location" id="location-input" class="form-control">
+                                <input type="text" name="location_id" id="location-input" class="form-control">
                             </div>
                         </div>
                         <div class="mt-3">
