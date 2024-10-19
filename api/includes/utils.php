@@ -65,7 +65,7 @@ function createTable($table, $data){
         $sql .= "$key, ";        
     }
 
-    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= "created_at";
     $sql .= ") VALUES (";
 
     foreach ($data as $key => $value) {
@@ -76,7 +76,7 @@ function createTable($table, $data){
         }
     }
 
-    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= "NOW()";
     $sql .= ")";
 
     return $sql;
@@ -93,7 +93,7 @@ function updateTable($table, $id, $data){
         }
     }
 
-    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= "`updated_at` = NOW() ";
     $sql .= " WHERE id = '$id'";
 
     return $sql;
