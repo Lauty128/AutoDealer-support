@@ -80,6 +80,7 @@ async function deleteClientEvent(id)
                             confirmButtonText: 'Aceptar',
                         });
                     
+                        clearForm('filtersForm')
                         ad_loadData(getClients(), printClients);
                     } else {
                         Swal.fire({
@@ -214,6 +215,7 @@ async function openModalView(id){
         document.getElementById('viewModal-email').textContent = client.email
         document.getElementById('viewModal-phone').textContent = client.phone
         document.getElementById('viewModal-location').textContent = client.city + ', ' + client.province
+        document.getElementById('viewStoresButton').onclick = () => window.location.href = `/concesionarios?user=${client.id}`
 
         closeModalPreloader('viewModalLoader')
     } else {
@@ -271,6 +273,7 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
                 // Si la operacion fue exitosa limpiamos cache
                 sessionStorage.removeItem(cacheKeys.clients);
                 
+                clearForm('filtersForm')
                 // Volvemos a cargar el listado
                 ad_loadData(getClients(), printClients);
             } else {

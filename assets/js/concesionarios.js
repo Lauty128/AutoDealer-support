@@ -80,6 +80,7 @@ async function deleteStoreEvent(id)
                             confirmButtonText: 'Aceptar',
                         });
                     
+                        clearForm('filtersForm')
                         ad_loadData(getStores(), printStores);
                     } else {
                         Swal.fire({
@@ -304,6 +305,7 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
                 // Si la operacion fue exitosa limpiamos cache
                 sessionStorage.removeItem(cacheKeys.stores);
                 
+                clearForm('filtersForm')
                 // Volvemos a cargar el listado
                 ad_loadData(getStores(), printStores);
             } else {

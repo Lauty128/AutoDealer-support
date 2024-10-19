@@ -94,7 +94,7 @@
                     <div class="mt-2">
                         <h5 style="font-size: 1em">Operaciones</h5>
                         <div class="d-flex gap-2 mt-2">
-                            <button class="btn btn-secondary" style="font-size: .75em">
+                            <button class="btn btn-secondary" style="font-size: .75em" id="viewStoresButton">
                                 Ver concesionarios
                             </button>
                             <button class="btn btn-secondary" style="font-size: .75em">
