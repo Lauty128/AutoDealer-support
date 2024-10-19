@@ -18,7 +18,14 @@ class ClientesController{
      **/
     public function get()
     {
-        $response = Clientes::getAll();
+        $where = [];
+        
+        if(isset($_GET['search'])){
+            $search = $_GET['search'];
+            $where[] = "CONCAT(u.name,' ',u.subname) LIKE '%$search%'";
+        }
+
+        $response = Clientes::getAll($where);
 
         echo json_encode($response);
         exit();

@@ -26,7 +26,7 @@
         </div>
 
         <div class="ad__filtersContainer">
-            <form action="">
+            <form action="" id="filtersForm">
                 <div class="col">
                     <label for="FilterInput" class="ms-1">Buscador</label>
                     <input type="text" class="form-control" name="search" placeholder="Nombre, provincia..." id="FilterInput">

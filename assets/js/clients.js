@@ -81,6 +81,14 @@ async function deleteClientEvent(id)
                         });
                     
                         ad_loadData(getClients(), printClients);
+                    } else {
+                        Swal.fire({
+                            title: "Ocurrio un error",
+                            text: "No se logro eliminar al cliente por culpa de un error interno",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1200
+                        });
                     }
                 }
             });
@@ -292,6 +300,30 @@ document.getElementById('List').addEventListener('click', e => {
 
 })
 
+document.getElementById('filtersForm').addEventListener("submit", e => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target);
+    const filters = {};
+    
+    // Actualizar parametros de busqueda en la url
+    const params = new URLSearchParams(window.location.search);
+    if (formData.get('search')){
+        params.set('search', formData.get('search'));
+        filters.search = formData.get('search')
+    } else {
+        delete filters.search
+        params.delete('search');
+    }
+
+    // Actualizar la URL sin recargar la página
+    const newUrl = window.location.pathname + '?' + params.toString();
+    history.replaceState(null, '', newUrl);
+
+    // Actualizar listado
+    ad_loadData(getClients(filters), printClients);
+})
+
 //---------> Cancelar evento por defecto del boton cancelar en #manageModal
 document.getElementById('manageModal_close').addEventListener('click', (e) =>{
     e.preventDefault()
@@ -303,17 +335,26 @@ document.getElementById('manageModal_close').addEventListener('click', (e) =>{
 //-----------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
 
-    await ad_loadData(getClients(), printClients);
-
+    // Verificar si hay parametros de busqueda en la url
     const urlParams = new URLSearchParams(window.location.search);
+    const filters = {}
+
+    // Actualiza filtros si existe en los parametros
+    if(urlParams.get('search')){
+        filters.search = urlParams.get('search');
+        document.getElementById('FilterInput').value = urlParams.get('search')
+    }
+
+    await ad_loadData(getClients(filters), printClients);
+
+    // Este parametro abre un cliente directamente, sin hacer click en ningun lado
     if(urlParams.get('open')){
         const list = document.querySelectorAll('[data-type="list-view"]')
             
         list.forEach(item => {
             if(item.dataset.id == urlParams.get('open'))
                 item.click()
-        })        
-    }
-    
+        })
 
+    }
 })

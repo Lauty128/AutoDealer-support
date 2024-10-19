@@ -16,7 +16,7 @@ class Clientes{
      *
      * @return array|null
      **/
-    public static function getAll($xData = [])
+    public static function getAll($where = [])
     {
         $response = null;
         $db = new Database();
@@ -26,7 +26,9 @@ class Clientes{
                 FROM users u
                     INNER JOIN locations l ON u.location_id = l.id";
 
-        if(isset($xData['filter'])) $sql.= ' WHERE '.$xData['filter'];
+        if(count($where) > 0){
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
 
         if($db->getConnectionStatus()){
             $response = $db->getQuery($sql);

@@ -15,7 +15,7 @@ class Concesionario{
      *
      * @return array|null
      **/
-    public static function getAll()
+    public static function getAll($where)
     {
         $response = null;
         $db = new Database();
@@ -26,7 +26,9 @@ class Concesionario{
                     INNER JOIN users u ON u.id = s.user_id
                     INNER JOIN locations l ON s.location_id = l.id";
 
-        //if(isset($xData['filter'])) $sql.= ' WHERE '.$xData['filter'];
+        if(count($where) > 0){
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
 
         if($db->getConnectionStatus()){
             $response = $db->getQuery($sql);

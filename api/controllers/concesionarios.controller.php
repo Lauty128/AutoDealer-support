@@ -18,7 +18,18 @@ class ConcesionariosController{
      **/
     public function getAll()
     {
-        $response = Concesionario::getAll();
+        $where = [];
+        
+        if(isset($_GET['search'])){
+            $search = $_GET['search'];
+            $where[] = "s.name LIKE '%$search%'";
+        }
+        if(isset($_GET['user'])){
+            $user = $_GET['user'];
+            $where[] = "s.user_id = $user";
+        }
+
+        $response = Concesionario::getAll($where);
 
         echo json_encode($response);
         exit();
@@ -31,7 +42,7 @@ class ConcesionariosController{
      **/
     public function getAllByClient($id)
     {
-        $response = Concesionario::getAll();
+        $response = Concesionario::getAll([]);
 
         echo json_encode($response);
         exit();

@@ -14,6 +14,22 @@ function manageErrorImage(event){
     event.target.setAttribute('src', defaultImageUrl)
 }
 
+function generateUrlFilters(url, filters = {}){
+    if(isEmpty(filters)){
+        return url
+    }
+    let newUrl = url + '?'
+
+    const keys = Object.keys(filters);
+    keys.forEach(key => {
+        newUrl += key + '=' + filters[key] + '&'
+    })
+
+    return newUrl
+}
+
+const isEmpty = (obj) => JSON.stringify(obj) === '{}';
+
 function clearForm(id){
     const form = document.getElementById(id)
     if(form)
@@ -89,13 +105,16 @@ async function ad_loadData(service, printFunction){
  * 
  * @returns {Array} Array con listado de clientes
  */
-async function getClients(){
-    // Si esta cacheado se devuelve sin consultar a la API
-    if(sessionStorage.getItem(cacheKeys.clients))
+async function getClients(filters = {}){
+    // Si esta cacheado se devuelve sin consultar a la API    
+    if(sessionStorage.getItem(cacheKeys.clients) && isEmpty(filters))
         return JSON.parse(sessionStorage.getItem(cacheKeys.clients))
 
+    // Generar url
+    const url = generateUrlFilters(api_base_url + 'clientes.php/get', filters);
+
     // Hacer consulta a la API
-    const data = await fetch(api_base_url + 'clientes.php/get')
+    const data = await fetch(url)
         .then(res => {
             if(!res.ok) throw new Error('Ocurrio un error en el servidor')
             return res.json()
@@ -106,8 +125,9 @@ async function getClients(){
         })
     
     console.log('Clientes cacheados..')
+
     // Guardar resultado en cache si no es nulo
-    if(data)
+    if(data && isEmpty(filters))
         sessionStorage.setItem(cacheKeys.clients, JSON.stringify(data))
 
     return data
@@ -118,13 +138,16 @@ async function getClients(){
  * 
  * @returns {Array} Array con listado de concesionarios
  */
-async function getStores(){
+async function getStores(filters){
     // Si esta cacheado se devuelve sin consultar a la API
-    if(sessionStorage.getItem(cacheKeys.stores))
+    if(sessionStorage.getItem(cacheKeys.stores) && isEmpty(filters))
         return JSON.parse(sessionStorage.getItem(cacheKeys.stores))
 
+    // Generar url
+    const url = generateUrlFilters(api_base_url + 'concesionarios.php/get', filters);
+
     // Hacer consulta a la API
-    const data = await fetch(api_base_url + 'concesionarios.php/get')
+    const data = await fetch(url)
         .then(res => {
             if(!res.ok) throw new Error('Ocurrio un error en el servidor')
             return res.json()
@@ -135,8 +158,9 @@ async function getStores(){
         })
     
     console.log('Concesionarios cacheados..')
+
     // Guardar resultado en cache si no es nulo
-    if(data)
+    if(data && isEmpty(filters))
         sessionStorage.setItem(cacheKeys.stores, JSON.stringify(data))
 
     return data

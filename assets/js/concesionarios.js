@@ -81,6 +81,14 @@ async function deleteStoreEvent(id)
                         });
                     
                         ad_loadData(getStores(), printStores);
+                    } else {
+                        Swal.fire({
+                            title: "Ocurrio un error",
+                            text: "No se logro eliminar el concesionario por culpa de un error interno",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1200
+                        });
                     }
                 }
             });
@@ -330,15 +338,64 @@ document.getElementById('manageModal_close').addEventListener('click', (e) =>{
     e.preventDefault()
 })
 
+document.getElementById('filtersForm').addEventListener("submit", e => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target);
+    const filters = {};
+    
+    // Actualizar parametros de busqueda en la url
+    const params = new URLSearchParams(window.location.search);
+    if (formData.get('search')){
+        params.set('search', formData.get('search'));
+        filters.search = formData.get('search')
+    } else {
+        delete filters.search
+        params.delete('search');
+    }
+
+    if (formData.get('user') && formData.get('user') != 0){
+        params.set('user', formData.get('user'));
+        filters.user = formData.get('user')
+    } else {
+        delete filters.user
+        params.delete('user');
+    }
+
+    // Actualizar la URL sin recargar la página
+    const newUrl = window.location.pathname + '?' + params.toString();
+    history.replaceState(null, '', newUrl);
+
+    // Actualizar listado
+    ad_loadData(getStores(filters), printStores);
+})
+
 
 //-----------------------------------------------------------
 //-----------------> Ejecucion del codigo <------------------
 //-----------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-    ad_loadData(getStores(), printStores);
+    // Verificar si hay parametros de busqueda en la url
+    const urlParams = new URLSearchParams(window.location.search);
+    const filters = {}
 
-    loadUsersOptions('filter-client');
+    // Actualiza filtros si existe en los parametros
+    if(urlParams.get('search')){
+        filters.search = urlParams.get('search');
+        document.getElementById('FilterInput').value = urlParams.get('search')
+    }
+    
+    // Cargar opciones del select de filtros y de formulario
+    await loadUsersOptions('filter-client');
     loadUsersOptions('client-input');
+    
+    if(urlParams.get('user') && urlParams.get('user') != 0){
+        filters.user = urlParams.get('user');
+        document.querySelectorAll('#filter-client option').forEach(option => {
+            if(option.value == urlParams.get('user')) option.selected = 1
+        })
+    }
 
+    ad_loadData(getStores(filters), printStores);
 })
