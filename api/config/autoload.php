@@ -8,6 +8,9 @@ include "includes/utils.php";
 //---> Conexion con la base de datos
 include 'includes/database.php';
 
+//---> Controladores
+include 'controllers/clientes.controller.php';
+
 //---> Modelos
 include 'models/clientes.model.php';
 include 'models/concesionarios.model.php';

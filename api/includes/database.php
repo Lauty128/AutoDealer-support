@@ -65,6 +65,29 @@ class Database{
         $this->DB->close();    
     }
 
+    /**
+     * Iniciar transaccion
+    **/
+    public function beginT()
+    {
+        $this->DB->begin_transaction();    
+    }
+
+    /**
+     * Hacer commit de la transaccion
+    **/
+    public function commit()
+    {
+        $this->DB->commit();    
+    }
+
+    /**
+     * Rollback para volver al estado anterior a la transaccion
+    **/
+    public function rollback()
+    {
+        $this->DB->rollback();    
+    }
 
     /**
      * Permite ejecutar una consulta sql

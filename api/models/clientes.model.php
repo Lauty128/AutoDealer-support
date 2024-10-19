@@ -3,7 +3,7 @@
 namespace App\Model;
 
 //--> Dependencies
-use Bcrypt\Bcrypt;
+use Exception;
 
 //--> Utils
 use App\Util\Database;
@@ -12,7 +12,7 @@ use App\Util\Database;
 class Clientes{
 
     /**
-     * Devuele un listado de todas las categorias
+     * Devuele un listado de todos los clientes
      *
      * @return array|null
      **/
@@ -72,39 +72,12 @@ class Clientes{
     public static function create($data)
     {
         $response = null;
-
-        // $validation = true;
-        // $requiredFields = [
-        //     'direccion',
-        //     'razon_social'
-        // ];
-        // foreach ($requiredFields as $field) {
-        //     if(!isset($data[$field]))
-        //         $validation = false;
-        // }
-
-        // if(!$validation)
-        //     return [
-        //         'message' => 'No se enviaron los datos necesarios para crear un nuevo cliente',
-        //         'status' => 500    
-        //     ];
-
         $db = new Database();
         
-        #Obtener valores requeridos y ejecutar procedimiento
-        $name = $data['name'];
-        $subname = $data['subname'];
-        $email = $data['email'];
-        $phone = $data['phone'];
-        $location_id = $data['location_id'];
-        $password = Bcrypt::encrypt($data['password']);
-        
-        $sql = "INSERT INTO users (name, subname, email, phone, location_id, password)
-                VALUES
-                    ('$name', '$subname', '$email', '$phone', '$location_id', '$password')";
+        // Generar sql
+        $sql = createTable('users', $data);
     
         if($db->getConnectionStatus()){
-            // $response = $db->getQuery($sql);
             $response = $db->execute($sql);
             $db->close();
         }
@@ -118,30 +91,15 @@ class Clientes{
      * @param Array $data Datos del body
      * @return Array|null
     **/
-    public static function update($data)
+    public static function update($id, $data)
     {
         $response = null;
         $db = new Database();
-        
-        #Obtener valores requeridos y ejecutar procedimiento
-        $id = $data['id'];
-        $name = $data['name'];
-        $subname = $data['subname'];
-        $email = $data['email'];
-        $phone = $data['phone'];
-        $location_id = $data['location_id'];
 
-        // $sql = "CALL clientes_insert('$razon_social', '$direccion')";
-        $sql = "UPDATE users SET
-                    name = '$name',
-                    subname = '$subname',
-                    email = '$email',
-                    phone = '$phone',
-                    location_id = '$location_id'
-                WHERE id = $id";
+        // Generar sql
+        $sql = updateTable('users', $id, $data);
 
         if($db->getConnectionStatus()){
-            // $response = $db->getQuery($sql);
             $response = $db->execute($sql);
             $db->close();
         }
@@ -159,18 +117,27 @@ class Clientes{
     {
         $response = null;
         $db = new Database();
-        
-        #Obtener valores requeridos y ejecutar procedimiento
-        // $sql = "CALL clientes_delete($id)";
 
         if($db->getConnectionStatus()){
-            $sql = "DELETE FROM stores WHERE user_id = $id";
-            $response = $db->execute($sql);
 
-            $sql = "DELETE FROM users WHERE id = $id";
-            $response = $db->execute($sql);
+            // Iniciar transaccion
+            $db->beginT();
+
+            try{
+                // Eliminar concesionarios relacionados con el cliente
+                $sql = "DELETE FROM stores WHERE user_id = ?";
+                $response = $db->execute($sql, [$id]);
+    
+                // Eliminar cliente
+                $sql = "DELETE FROM users WHERE id = ?";
+                $response = $db->execute($sql, [$id]);
+
+                $db->commit();
+            } catch(Exception $error) {
+                $response = false;
+                $db->rollback();
+            }
             
-            // $response = $db->getQuery($sql);
             $db->close();
         }
 

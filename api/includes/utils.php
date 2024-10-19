@@ -98,3 +98,30 @@ function updateTable($table, $id, $data){
 
     return $sql;
 }
+
+function utilExecuteController($class, $method){
+    call_user_func([$class, $method]);
+}
+
+function utilArrayAvoidElement($data, $xKey){
+    $res = [];
+    
+    if(isset($data)){
+        foreach ($data as $key => $value) {
+            if($key != $xKey)
+                $res[$key] = $value;
+        }
+    }
+
+    return $res;
+}
+
+function utilGetRequest(...$keys){
+    $res = [];
+
+    foreach ($keys as $key => $value) {
+        $res[$key] = $value;
+    }
+
+    return $res;
+}
