@@ -12,4 +12,7 @@ class Config{
 
     // Project configurations
     static int $DEBUG = 1;
+
+    // Defined routes
+    public static string $API_URL = "http://autodealer-system.local/api/";
 }

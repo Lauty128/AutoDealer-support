@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+
 //--> Dependencies
-use Bcrypt\Bcrypt;
+use App\Config\Config;
+use CURLFile;
 
 //--> Models
 use App\Model\Concesionario;
@@ -80,6 +82,43 @@ class ConcesionariosController{
         $data['id'] = generarCodigo(20);
 
         $response = Concesionario::create($data);
+
+        if(isset($_FILES['image'])){
+            // Ruta temporal del archivo subido
+            $tempPath = $_FILES['image']['tmp_name'];
+            
+            $user_id = $data['user_id'];
+            $store_id = $data['id'];
+
+            // URL de la API externa a la que deseas enviar la imagen
+            $url = Config::$API_URL . "stores/user/$user_id/$store_id/image"; // Cambia esta URL por la de la API real
+
+            // Abrir el archivo en modo lectura binaria
+            $imageData = new CURLFile($tempPath, $_FILES['image']['type'], $_FILES['image']['name']);
+
+            // Inicializar cURL
+            $ch = curl_init();
+
+            // Configurar cURL para hacer una petición POST
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+
+            // Crear un array con los datos a enviar (la imagen)
+            $postData = array(
+                'image' => $imageData
+            );
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+
+            // Configurar opciones adicionales
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Para recibir la respuesta de la API
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Content-Type: multipart/form-data"
+            ));
+
+            // Ejecutar la petición cURL y cerrarla
+            curl_exec($ch);
+            curl_close($ch);
+        }
 
         echo json_encode($response);
         exit();
