@@ -83,7 +83,7 @@ class ConcesionariosController{
 
         $response = Concesionario::create($data);
 
-        if(isset($_FILES['image'])){
+        if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK){
             // Ruta temporal del archivo subido
             $tempPath = $_FILES['image']['tmp_name'];
             

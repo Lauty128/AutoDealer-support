@@ -130,4 +130,14 @@ class Concesionario{
 
         return $response; # Retorna null o el resultado de la consulta sql
     }
+
+    public static function change_image()
+    {
+        # code...
+    }
+
+    public static function change_banner()
+    {
+        # code...
+    }
 }

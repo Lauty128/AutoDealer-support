@@ -257,8 +257,9 @@ async function loadUsersOptions(id){
 
 function markOption(idSelect, correctValue){
     document.querySelectorAll(`#${idSelect} option`).forEach(element => {
-        console.log(element);
-        if(element.value == correctValue) element.checked = 1;
+        if(element.value == correctValue){
+            element.selected = 1
+        };
     })
 }
 

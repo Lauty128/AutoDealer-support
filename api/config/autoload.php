@@ -11,11 +11,13 @@ include 'includes/database.php';
 //---> Controladores
 include 'controllers/clientes.controller.php';
 include 'controllers/concesionarios.controller.php';
+include 'controllers/marcas.controller.php';
 
 //---> Modelos
 include 'models/clientes.model.php';
 include 'models/concesionarios.model.php';
 include 'models/ubicaciones.model.php';
+include 'models/marcas.model.php';
 
 
 //---> Importar modelos dinamicamente

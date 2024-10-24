@@ -82,6 +82,30 @@ function createTable($table, $data){
     return $sql;
 }
 
+function createTableWithoutDate($table, $data){
+    $sql = "INSERT `$table` (";
+
+    foreach ($data as $key => $value) {
+        $sql .= "$key, ";        
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= ") VALUES (";
+
+    foreach ($data as $key => $value) {
+        if(gettype($value) == 'string'){
+            $sql .= "'$value', ";
+        } else {
+            $sql .= "$value, ";
+        }
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= ")";
+
+    return $sql;
+}
+
 function updateTable($table, $id, $data){
     $sql = "UPDATE `$table` SET ";
 
@@ -94,6 +118,23 @@ function updateTable($table, $id, $data){
     }
 
     $sql .= "`updated_at` = NOW() ";
+    $sql .= " WHERE id = '$id'";
+
+    return $sql;
+}
+
+function updateTableWithoutDate($table, $id, $data){
+    $sql = "UPDATE `$table` SET ";
+
+    foreach ($data as $key => $value) {
+        if(gettype($value) == 'string'){
+            $sql .= "`$key` = '$value', ";
+        } else {
+            $sql .= "`$key` = $value, ";
+        }
+    }
+
+    $sql = substr($sql, 0, strlen($sql) - 2);
     $sql .= " WHERE id = '$id'";
 
     return $sql;

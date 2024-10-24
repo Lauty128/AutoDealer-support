@@ -6,6 +6,7 @@ const preLoader = document.getElementById('preloadMessage');
 const cacheKeys = {
     clients: 'autodealer.admin.clients',
     stores: 'autodealer.admin.stores',
+    marks: 'autodealer.admin.marks',
 }
 
 //-----> Funciones globales
@@ -162,6 +163,39 @@ async function getStores(filters){
     // Guardar resultado en cache si no es nulo
     if(data && isEmpty(filters))
         sessionStorage.setItem(cacheKeys.stores, JSON.stringify(data))
+
+    return data
+}
+
+/**
+ * Obtener lista de todas las marcas del sistema
+ * 
+ * @returns {Array} Array con listado de marcas
+ */
+async function getMarks(){
+    // Si esta cacheado se devuelve sin consultar a la API    
+    if(sessionStorage.getItem(cacheKeys.marks))
+        return JSON.parse(sessionStorage.getItem(cacheKeys.marks))
+
+    // Generar url
+    const url = api_base_url + 'marcas.php/get';
+
+    // Hacer consulta a la API
+    const data = await fetch(url)
+        .then(res => {
+            if(!res.ok) throw new Error('Ocurrio un error en el servidor')
+            return res.json()
+        })
+        .catch(error => {
+            console.log(error);
+            return null
+        })
+    
+    console.log('Marcas cacheadas..')
+
+    // Guardar resultado en cache si no es nulo
+    if(data)
+        sessionStorage.setItem(cacheKeys.marks, JSON.stringify(data))
 
     return data
 }
