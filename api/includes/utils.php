@@ -166,3 +166,19 @@ function utilGetRequest(...$keys){
 
     return $res;
 }
+
+function writeLog($message, $logDir = 'logs') {
+    // Asegurarse de que el directorio de logs exista
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0777, true);
+    }
+
+    // Nombre del archivo de log basado en la fecha actual
+    $filename = $logDir . '/log-' . date('Y-m-d') . '.txt';
+
+    // Formato del mensaje: [hora] mensaje
+    $formattedMessage = '[' . date('H:i:s') . '] ' . $message . PHP_EOL;
+
+    // Escribir el mensaje al final del archivo
+    file_put_contents($filename, $formattedMessage, FILE_APPEND);
+}

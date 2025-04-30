@@ -8,7 +8,7 @@
     
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $valid_user = "admin";
-        $valid_password = "admin";
+        $valid_password = "Lauty12052003";
         
         $user = $_POST['user'];
         $password = $_POST['password'];
