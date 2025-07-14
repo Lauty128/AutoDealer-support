@@ -38,6 +38,11 @@ else if($endpoint == 'update' && $_SERVER["REQUEST_METHOD"] == "POST"){
     $controller = new ClientesController();
     utilExecuteController($controller, 'update');
 }
+# Actualizar datos de un cliente
+else if($endpoint == 'update-password' && $_SERVER["REQUEST_METHOD"] == "POST"){
+    $controller = new ClientesController();
+    utilExecuteController($controller, 'update_password');
+}
 # Eliminar cliente junto a sus concesionarios
 else if($endpoint == 'delete' && $_SERVER["REQUEST_METHOD"] == "POST"){
     $controller = new ClientesController();

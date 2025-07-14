@@ -216,11 +216,29 @@ async function openModalView(id){
         document.getElementById('viewModal-phone').textContent = client.phone
         document.getElementById('viewModal-location').textContent = client.city + ', ' + client.province
         document.getElementById('viewStoresButton').onclick = () => window.location.href = `/concesionarios?user=${client.id}`
+        document.getElementById('changePasswordButton').onclick = () => openModalChangePassword(client.id)
 
         closeModalPreloader('viewModalLoader')
     } else {
         loadModalPreloader('viewModalLoader', 'Ocurrio un error')
     }
+}
+
+/**
+ * Abrir modal #changePasswordModal preparado para cambiar la contraseña del cliente
+ * 
+ * @param {Int} id Id del cliente a editar 
+ */
+async function openModalChangePassword(xid){
+    document.getElementById('changePasswordModalTitle').textContent = 'Actualizar contraseña #' + xid
+    
+    loadModalPreloader('changePasswordModalLoader', 'Cargando...')
+    
+    document.getElementById("changed-password-id-input").value = xid
+    document.getElementById("changed-password-input").value = ''
+    document.getElementById("changed-repeated-password-input").value = ''
+    
+    closeModalPreloader('changePasswordModalLoader')
 }
 
 //-----------------------------------------------------------
@@ -293,6 +311,53 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
 
 })
 
+document.getElementById('changePasswordForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const data = {
+        id : document.getElementById("changed-password-id-input").value,
+        password : document.getElementById("changed-password-input").value,
+        repeated_password : document.getElementById("changed-repeated-password-input").value,
+    }
+    
+    let successMessage = 'Contraseña actualizada';
+
+    fetch(api_base_url + 'clientes.php/update-password', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Cerrar modal
+            document.getElementById('changePasswordModal_close').click()
+
+            if(data){
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: successMessage,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                
+                clearForm('filtersForm')
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "No se pudo realizar la operacion",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return null
+        })
+
+})
+
 //---------> Manejo de eventos click dentro del contenedor #List
 document.getElementById('List').addEventListener('click', e => {
 
@@ -329,6 +394,10 @@ document.getElementById('filtersForm').addEventListener("submit", e => {
 
 //---------> Cancelar evento por defecto del boton cancelar en #manageModal
 document.getElementById('manageModal_close').addEventListener('click', (e) =>{
+    e.preventDefault()
+})
+
+document.getElementById('changePasswordModal_close').addEventListener('click', (e) =>{
     e.preventDefault()
 })
 

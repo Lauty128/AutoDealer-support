@@ -60,7 +60,7 @@
         
     </section>
     
-    <!-- Modal -->
+    <!-- MODAL PARA VER LOS DATOS DE UN CLIENTE -->
     <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -97,7 +97,7 @@
                             <button class="btn btn-secondary" style="font-size: .75em" id="viewStoresButton">
                                 Ver concesionarios
                             </button>
-                            <button class="btn btn-secondary" style="font-size: .75em">
+                            <button class="btn btn-secondary" style="font-size: .75em" id="changePasswordButton" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                                 Cambiar contraseña
                             </button>
                         </div>
@@ -111,6 +111,45 @@
         </div>
     </div>
 
+    <!-- MODAL PARA ACTUALIZAR LA CONTRA DEL CLIENTE -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="changePasswordModalTitle"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <input type="hidden" id="changed-password-id-input">
+                        <div class="col-6 mt-3">
+                            <label for="name-input">Contraseña</label>
+                            <input type="password" name="password" id="changed-password-input" class="form-control">
+                        </div>
+                        <div class="col-6 mt-3">
+                            <label for="name-input">Repetir Contraseña</label>
+                            <input type="password" name="repeated_password" id="changed-repeated-password-input" class="form-control">
+                        </div>
+                        
+                        <div class="row mt-4 gap-2 justify-content-end me-1">
+                            <button class="btn btn-secondary" style="width: fit-content;" id="changePasswordModal_close" data-bs-dismiss="modal" aria-label="Close">
+                                Cancelar
+                            </button>
+                            <button class="btn btn-primary" style="width: fit-content;" type="submit">
+                                Actualizar contraseña
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="modalLoader" id="changePasswordModalLoader">
+                        <p>Cargando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA ACTUALIZAR LOS DATOS DEL CLIENTE -->
     <div class="modal fade" id="manageModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">

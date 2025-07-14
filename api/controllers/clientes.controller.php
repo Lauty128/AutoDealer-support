@@ -112,5 +112,29 @@ class ClientesController{
         echo json_encode($response);
         exit();
     }
+
+    /**
+     * Cambiar contraseña de usuario
+     * 
+     * @return bool
+    */
+    function update_password()
+    {
+        global $data;
+
+        // Inicializar estado de respuesta en falso
+        $response = false;
+        
+        // Validar que las contraseñas sean iguales
+        if ($data['password'] === $data['repeated_password']) {
+            $newPassword = Bcrypt::encrypt($data['password']);
+            // Actualizar contraseña cliente y si se obtiene un true significa que se cambio correctamente
+            $response = Clientes::update($data['id'], [ 'password' => $newPassword ]);
+        }
+
+
+        echo json_encode($response);
+        exit();
+    }
     
 }
