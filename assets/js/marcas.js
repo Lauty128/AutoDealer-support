@@ -127,8 +127,8 @@ function printMarks(marks){
 /**
  * Limpiar formulario
  */
-function clearForm(){
-    document.getElementById("manageForm").reset()
+function clearForm(id){
+    document.getElementById(id).reset()
 }
 
 /**
@@ -152,7 +152,7 @@ async function openModalEdit(id, name){
  * 
  */
 function openModalCreate(){
-    clearForm();
+    clearForm('manageForm');
     document.getElementById('manageModalTitle').textContent = 'Agregar nueva marca';
 }
 
@@ -200,6 +200,9 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
                 // Si la operacion fue exitosa limpiamos cache
                 sessionStorage.removeItem(cacheKeys.marks);
                 
+                // Limpiar busqueda
+                clearForm('filtersForm')
+
                 // Volvemos a cargar el listado
                 ad_loadData(getMarks(), printMarks);
             } else {
@@ -218,6 +221,32 @@ document.getElementById('manageForm').addEventListener('submit', async (event) =
         })
 
 })
+
+
+document.getElementById('filtersForm').addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target);
+    const filters = {};
+    
+    // Actualizar parametros de busqueda en la url
+    const params = new URLSearchParams(window.location.search);
+    if (formData.get('search')){
+        params.set('search', formData.get('search'));
+        filters.search = formData.get('search')
+    } else {
+        delete filters.search
+        params.delete('search');
+    }
+
+    // Actualizar la URL sin recargar la página
+    const newUrl = window.location.pathname + '?' + params.toString();
+    history.replaceState(null, '', newUrl);
+
+    // Actualizar listado
+    ad_loadData(getMarks(filters), printMarks);
+})
+
 
 //---------> Manejo de eventos click dentro del contenedor #List
 document.getElementById('List').addEventListener('click', e => {
@@ -239,6 +268,16 @@ document.getElementById('manageModal_close').addEventListener('click', (e) =>{
 //-----------------------------------------------------------
 //-----------------> Ejecucion del codigo <------------------
 //-----------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    ad_loadData(getMarks(), printMarks);
+document.addEventListener('DOMContentLoaded', async () => {
+    // Verificar si hay parametros de busqueda en la url
+    const urlParams = new URLSearchParams(window.location.search);
+    const filters = {}
+    
+    // Actualiza filtros si existe en los parametros
+    if(urlParams.get('search')){
+        filters.search = urlParams.get('search');
+        document.getElementById('FilterInput').value = urlParams.get('search')
+    }
+    
+    ad_loadData(getMarks(filters), printMarks);
 })

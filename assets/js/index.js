@@ -88,7 +88,7 @@ function closeModalPreloader(id){
  * @param {CallableFunction} printFunction Funcion utilizada para imprimir la informacion
  * @returns 
  */
-async function ad_loadData(service, printFunction){
+async function ad_loadData(service, printFunction){    
     const data = await service;
     
     if(!data){
@@ -139,7 +139,7 @@ async function getClients(filters = {}){
  * 
  * @returns {Array} Array con listado de concesionarios
  */
-async function getStores(filters){
+async function getStores(filters = {}){
     // Si esta cacheado se devuelve sin consultar a la API
     if(sessionStorage.getItem(cacheKeys.stores) && isEmpty(filters))
         return JSON.parse(sessionStorage.getItem(cacheKeys.stores))
@@ -172,13 +172,13 @@ async function getStores(filters){
  * 
  * @returns {Array} Array con listado de marcas
  */
-async function getMarks(){
+async function getMarks(filters = {}){
     // Si esta cacheado se devuelve sin consultar a la API    
     if(sessionStorage.getItem(cacheKeys.marks))
         return JSON.parse(sessionStorage.getItem(cacheKeys.marks))
 
     // Generar url
-    const url = api_base_url + 'marcas.php/get';
+    const url = generateUrlFilters(api_base_url + 'marcas.php/get', filters);
 
     // Hacer consulta a la API
     const data = await fetch(url)
