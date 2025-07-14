@@ -18,7 +18,13 @@ class MarcasController{
      **/
     public function get()
     {
-        $response = Marca::getAll();
+        $where = '';
+
+        if (isset($_GET['search']) && $_GET['search'] != '') {
+            $where = "WHERE m.name LIKE '%" . str_replace(' ', '%', $_GET['search']) . "%'";
+        }
+
+        $response = Marca::getAll($where);
 
         echo json_encode($response);
         exit();

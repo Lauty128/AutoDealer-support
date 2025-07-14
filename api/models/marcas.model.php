@@ -18,7 +18,7 @@ class Marca{
      *
      * @return array|null
      **/
-    public static function getAll()
+    public static function getAll($where)
     {
         $response = null;
         $db = new Database();
@@ -27,6 +27,7 @@ class Marca{
         $sql = "SELECT m.*, COUNT(v.id) AS vehicles
                 FROM marks m
                     LEFT JOIN vehicles v ON v.mark_id = m.id
+                $where
                 GROUP BY (m.id)
                 ORDER BY vehicles DESC";
 
@@ -139,8 +140,25 @@ class Marca{
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Para recibir la respuesta de la API
 
        // Ejecutar la petición cURL y cerrarla
-       curl_exec($ch);
+       $response = curl_exec($ch);
+
+        // Verificar si hubo errores
+        if (curl_errno($ch)) {
+            echo 'Error en cURL: ' . curl_error($ch);
+        } else {
+            // Obtener el HTTP Status Code
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($httpCode == 200) {
+                writeLog('Request exitoso: ' . $response);
+            } else {
+                writeLog('Error HTTP Code: ' . $httpCode);
+                writeLog('Respuesta: ' . $response);
+            }
+        }
+
        curl_close($ch);
 
+       return $response;
     }
 }
