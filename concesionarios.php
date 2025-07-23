@@ -169,46 +169,60 @@
                             <input type="file" name="image" accept="image/*">
                         </div>
                         <div class="mt-3">
-                            <label for="name-input">Nombre concesionario</label>
+                            <label class="mb-1" for="name-input">Nombre concesionario</label>
                             <input type="text" name="name" id="name-input" class="form-control">
                         </div>
                         <div class="row mt-3">
                             <div class="col">
-                                <label for="name-input">Usuario</label>
+                                <label class="mb-1" for="name-input">Usuario</label>
                                 <input type="text" name="username" id="username-input" class="form-control">
                             </div>
                             <div class="col">
-                                <label for="client-input" class="ms-1">Cliente</label>
+                                <label class="mb-1" for="client-input" class="ms-1">Cliente</label>
                                 <select name="user_id" id="client-input" class="form-select">
                                     <!-- Options -->
                                 </select>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <label for="email-input">Correo electronico</label>
+                            <label class="mb-1" for="email-input">Correo electronico</label>
                             <input type="email" name="email" id="email-input" class="form-control">
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label for="phone-input">Telefono</label>
+                                <label class="mb-1" for="phone-input">Telefono</label>
                                 <input type="text" name="phone" id="phone-input" class="form-control">
                             </div>
                             <div class="col-6">
-                                <label for="location-input">Ubicación</label>
+                                <label class="mb-1" for="location-input">Ubicación</label>
                                 <input type="text" name="location_id" id="location-input" class="form-control">
                             </div>
                         </div>
                         <div class="mt-3">
-                            <label for="address-input">Dirección</label>
+                            <label class="mb-1" for="address-input">Dirección</label>
                             <input type="text" name="address" id="address-input" class="form-control">
                         </div>
                         <div class="mt-3">
-                            <label for="map-input">Mapa</label>
+                            <label class="mb-1" for="map-input">Mapa</label>
                             <input type="text" name="map" id="map-input" class="form-control">
                         </div>
                         <div class="col mt-3">
-                            <label for="location-input">Descripción</label>
+                            <label class="mb-1" for="location-input">Descripción</label>
                             <textarea name="description" id="description-input" rows="4" class="form-control"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col mt-3">
+                                <label class="mb-1" for="primary_color-input">Color principal</label>
+                                <input type="color" name="primary_color" id="primary_color-input" class="form-control" style="height: 38px; width: 55px">
+                            </div>
+                            <div class="col mt-3">
+                                <label class="mb-1" for="dark_theme-input">Modo oscuro</label>
+                                <select name="dark_theme" id="dark_theme-input" class="form-select">
+                                    <option value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select>
+                            </div>
                         </div>
 
                         <br>
@@ -216,7 +230,7 @@
 
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label for="price_currency-input">Moneda</label>
+                                <label class="mb-1" for="price_currency-input">Moneda</label>
                                 <select name="price_currency" id="price_currency-input" class="form-select">
                                     <option value="ARS">ARS</option>
                                     <option value="USD">USD</option>
@@ -228,21 +242,21 @@
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label for="dolar_conversion-input">Conversion a dolar</label>
+                                <label class="mb-1" for="dolar_conversion-input">Conversion a dolar</label>
                                 <input type="number" name="dolar_conversion" id="dolar_conversion-input" class="form-control">
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label for="personal_info-input">Mostrar dueño</label>
+                                <label class="mb-1" for="personal_info-input">Mostrar dueño</label>
                                 <select name="personal_info" id="personal_info-input" class="form-select">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label for="message_notify-input">Obtener notificaciones</label>
+                                <label class="mb-1" for="message_notify-input">Obtener notificaciones</label>
                                 <select name="message_notify" id="message_notify-input" class="form-select">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>

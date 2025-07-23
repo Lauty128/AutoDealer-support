@@ -166,6 +166,8 @@ async function openModalEdit(id){
         document.getElementById("phone-input").value = store.phone
         document.getElementById("location-input").value = store.location_id
         document.getElementById("dolar_conversion-input").value = store.dolar_conversion
+        document.getElementById("primary_color-input").value = store.primary_color
+        document.getElementById("dark_theme-input").value = store.dark_theme
 
         markOption('client-input', store.user_id)
         markOption('price_currency-input', store.price_currency)
