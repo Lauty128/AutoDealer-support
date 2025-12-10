@@ -282,14 +282,7 @@
         </div>
     </div>
 
-    <script>
-        const api_base_url = '<?= constant('api_base_url') ?>';
-        const base_url = '<?= constant('base_url') ?>';
-        const system_base_url = '<?= constant('system_base_url') ?>';
-        const storage_base_url = '<?= constant('storage_base_url') ?>';
-    </script>
-
-    <script src="assets/js/index.js"></script>
+    <?php include 'components/footer.php' ?> 
     <script src="assets/js/concesionarios.js"></script>
 </body>
 </html>

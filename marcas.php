@@ -94,12 +94,7 @@
         </div>
     </div>
 
-    <script>
-        const api_base_url = '<?= constant('api_base_url') ?>';
-        const storage_base_url = '<?= constant('storage_base_url') ?>';
-    </script>
-
-    <script src="assets/js/index.js"></script>
+    <?php include 'components/footer.php' ?> 
     <script src="assets/js/marcas.js"></script>
 </body>
 </html>
