@@ -7,9 +7,9 @@ require __DIR__ . '/vendor/autoload.php'; # Composer
 require 'config/autoload.php'; # Local
 
 //----> Controllers
-use App\Controller\MarcasController;
+use App\Controller\FacturasController;
 
-//----> Config 
+//----> Ejecucion de API
 # Obtener url
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $aUrl = explode('/', $url);
@@ -17,27 +17,18 @@ $endpoint = $aUrl[count($aUrl) - 1]; # Acceder a ultima posicion
 
 # Obtener datos de la peticion
 $request = file_get_contents('php://input');
+// Solo usar si los datos son enviados en formato JSON
 $data = json_decode($request, true);
 
 //----> Endpoints
-# Obtener listado de marcas
+# Obtener listado de todos los concesionarios
 if($endpoint == 'get'){
-    $controller = new MarcasController();
-    utilExecuteController($controller, 'get');
+    $controller = new FacturasController();
+    utilExecuteController($controller, 'getAll');
 }
-# Crear una marca nueva
-else if($endpoint == 'create' && $_SERVER["REQUEST_METHOD"] == "POST"){
-    $controller = new MarcasController();
-    utilExecuteController($controller, 'create');
-}
-# Actualizar datos de una marca
-else if($endpoint == 'update' && $_SERVER["REQUEST_METHOD"] == "POST"){
-    $controller = new MarcasController();
-    utilExecuteController($controller, 'update');
-}
-# Eliminar marca junto a sus vhiculos
+# Eliminar concesionario junto a sus concesionarios
 else if($endpoint == 'delete' && $_SERVER["REQUEST_METHOD"] == "POST"){
-    $controller = new MarcasController();
+    $controller = new FacturasController();
     utilExecuteController($controller, 'delete');
 }
 

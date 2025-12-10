@@ -1,23 +1,25 @@
 <?php
 
 //---> Configuraciones y utilidades
-include "config/header.php";
-include "config/config.php";
-include "includes/utils.php";
+//include $_SERVER['DOCUMENT_ROOT'] . "/api/config/header.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/api/config/config.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/api/includes/utils.php";
 
 //---> Conexion con la base de datos
-include 'includes/database.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/includes/database.php';
 
 //---> Controladores
-include 'controllers/clientes.controller.php';
-include 'controllers/concesionarios.controller.php';
-include 'controllers/marcas.controller.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/controllers/clientes.controller.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/controllers/concesionarios.controller.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/controllers/marcas.controller.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/controllers/facturas.controller.php';
 
 //---> Modelos
-include 'models/clientes.model.php';
-include 'models/concesionarios.model.php';
-include 'models/ubicaciones.model.php';
-include 'models/marcas.model.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/models/clientes.model.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/models/concesionarios.model.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/models/ubicaciones.model.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/models/marcas.model.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/api/models/facturas.model.php';
 
 
 //---> Importar modelos dinamicamente

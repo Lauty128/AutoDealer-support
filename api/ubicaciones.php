@@ -1,4 +1,6 @@
 <?php
+//----> Header
+include $_SERVER['DOCUMENT_ROOT'] . "/api/config/header.php";
 
 //----> Autoload
 require __DIR__ . '/vendor/autoload.php'; # Composer
